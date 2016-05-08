@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link href="css/style.css" rel="stylesheet" />
+    <title>Vue JS retrospective demo</title>
+  </head>
+  <body>
+    <div id="app" @mousemove="onMouseMove">
+      <saved-boards :boards="boards" :active-board-index="activeBoardIndex" v-ref:savedboards></saved-boards>
+      <div class="board-content">
+        <div class="main_menu">
+          <span class="heading">Retrospectify<sup>™</sup></span>
+          <div class="note_actions">
+            <button class="positive" v-on:click="addNote('positive')">Positive note</button>
+            <button class="neutral" v-on:click="addNote('neutral')">Neutral note</button>
+            <button class="improvement" v-on:click="addNote('improvement')">Improvement note</button>
+          </div>
+          <div class="board_actions">
+            <button v-on:click.stop="toggleSidebar">LOAD</button>
+            <button v-on:click="saveState">SAVE</button>
+            <button v-on:click="clear">CLEAR</button>
+          </div>
+        </div>
+        <p>
+          <input class="board-title" v-model="activeBoard.title" />
+        </p>
+        <div class="notes">
+          <div class="empty-state" v-show="!activeBoard.notes.length">this is a very empty screen</div>
+          <custom-note v-for="note in activeBoard.notes" transition="flip" enter-stagger="100" :content.sync="note.text" :type.sync="note.note_type" :id="$index" :position.sync="note.position">
+            </custom-note>
+        </div>
+      </div>
+    </div>
+
+    <!-- The template for the note object -->
+    <script type="text/x-template" id="custom-note-template">
+      <div class="note" v-bind:class="nClass" v-bind:style="nStyle"
+        @mousedown="startDrag" @mouseup="stopDrag" @keyup.46="removeNote">
+        <textarea v-el:"note-text" v-model="content" @blur="stopEdit" @keyup.enter="stopEdit"></textarea>
+        <button v-on:click="removeNote" class="note-remove">X</button>
+      </div>
+    </script>
+
+    <!-- The template for the saved-boards sidebar component -->
+    <script type="text/x-template" id="saved-boards">
+      <div class="sidebar-component">
+        <div class="sidebar" v-show="expanded" transition="slide">
+          <h2>Saved boards</h2>
+          <ul>
+            <li v-for="board in boards" @click="loadBoard($index)" v-bind:class="{ 'active' : (activeBoardIndex == $index)}">{{ board.title }}</li>
+          </ul>
+          <button @click="createBoard">+ New</button>
+        </div>
+        <div class="sidebar-overlay" @click="toggle" v-show="expanded"></div>
+      </div>
+    </script>
+
+    <!-- All other js files -->
+    <script src="js/vue.dev.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
