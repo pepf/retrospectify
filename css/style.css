@@ -1,0 +1,200 @@
+/*General styling stuff*/
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  font-family: sans-serif;
+  background-color: #ECF0F1;
+  font-size: 14px;
+}
+
+textarea, input {
+  outline: none;
+  font-family: sans-serif;
+}
+#app {
+  position:absolute;
+  top: 0; right:0; bottom: 0; left: 0;
+  padding: 1em;
+}
+
+button {
+  position:relative;
+  background-color: #ABB7B7;
+  border: none;
+  border-radius: 2px;
+  box-shadow: 0px 1px #B2B2B2;
+  padding: 0.5em;
+  cursor: pointer;
+  font-size: 1em;
+  outline:none;
+  transition: background-color 0.2s;
+}
+button:hover {
+  background-color: #C3CFCF;
+}
+button:active {
+  top: 1px;
+  box-shadow: none;
+  background-color: #919C9C;
+}
+
+button.positive    { border-left: 10px solid #CAF8C7; }
+button.neutral     { border-left: 10px solid #ECECEC; }
+button.improvement { border-left: 10px solid #F0C4A4; }
+
+/*Heading styles*/
+span.heading {
+  color: #788181;
+  font-size: 1.5em;
+  vertical-align: initial;
+  margin-right: 1em;
+}
+
+.main_menu {
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.board-title {
+  color: #788181;
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  font-size: 1em;
+  width: 250px;
+  border-bottom: 1px solid #788181;
+  padding: 0.5em 0;
+}
+
+/* sidebar component styles */
+.sidebar {
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    width: 300px;
+    background-color: #6C7A89;
+    color: #FFF;
+    right: 0;
+    padding: 1em;
+    z-index: 2;
+}
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+.sidebar li {
+  cursor: pointer;
+  padding: 1em;
+
+}
+.sidebar li:hover {
+  background-color: #656E79;
+}
+.sidebar li.active {
+  background-color: #8E9FB3;
+}
+
+.sidebar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+/*Component styles*/
+.empty-state {
+    position: absolute;
+    left: 0;
+    top: 330px;
+    font-size: 3em;
+    text-align: center;
+    right: 0;
+    color: #ABB7B7;
+    opacity: 0.5;
+    user-select: none;
+}
+
+.notes {
+  list-style: none;
+  position:relative;
+}
+.note {
+  background-color: #FFF;
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  overflow: hidden;
+  border-radius: 3px;
+  border: none;
+  border-bottom: 1px solid #C1C1C1;
+  box-shadow: 0px 0px 5px rgba(112, 112, 112, 0.45);
+  transition: box-shadow 0.5s, transform 0.25s;
+  cursor: -webkit-grab;
+}
+.note.improvement {
+  background-color: #F0C4A4;
+}
+.note.neutral {
+  background-color: #ECECEC;
+}
+.note.positive {
+  background-color: #CAF8C7
+}
+
+.note.active {
+  box-shadow: 0px 0px 20px rgba(112, 112, 112, 0.45);
+  transform: scale(1.05);
+  cursor: -webkit-grabbing;
+}
+.note.editing {
+  box-shadow: 0px 0px 20px #8ACBD3;
+}
+.note textarea {
+  width:100%;
+  height:100%;
+  border: none;
+  margin-top:2em;
+  font-size:1em;
+  padding:5px;
+  background-color:transparent;
+}
+.note button.note-remove {
+  position:absolute;
+  top: 0;
+  right: 0;
+  border: none;
+  background-color: transparent;
+  font-size:1.5em;
+  cursor:pointer;
+  font-size: 1em;
+  box-shadow: none;
+}
+
+/*
+ * CSS transitions for components
+*/
+/* always present */
+.slide-transition {
+  transition: right .25s ease-out;
+  right: 0px;
+}
+
+/* .expand-enter defines the starting state for entering */
+/* .expand-leave defines the ending state for leaving */
+.slide-enter, .slide-leave {
+  right: -300px;
+}
+
+.flip-transition {
+  transition: transform 0.33s ease-out, opacity 0.5s ease-out;
+  opacity: 1.0;
+  transform: translateY(0);
+}
+.flip-enter, .flip-leave {
+  opacity: 0;
+  transform: translateY(10px);
+}
