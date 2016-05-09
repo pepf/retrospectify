@@ -37,7 +37,7 @@
     <script type="text/x-template" id="custom-note-template">
       <div class="note" v-bind:class="nClass" v-bind:style="nStyle"
         @mousedown="startDrag" @mouseup="stopDrag" @keyup.46="removeNote">
-        <textarea v-el:"note-text" v-model="content" @blur="stopEdit" @keyup.enter="stopEdit"></textarea>
+        <textarea v-el:"note-text" v-model="content" @blur="stopEdit" ></textarea>
         <button v-on:click="removeNote" class="note-remove">X</button>
       </div>
     </script>

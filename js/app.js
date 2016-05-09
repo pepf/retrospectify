@@ -130,6 +130,10 @@ new Vue({
     },
     'start_drag': function(child) {
       this.activeDrag = child;
+
+      //move an active note visually to the top
+      var activeNote = this.activeBoard.notes.splice( child.id, 1 );
+      this.activeBoard.notes.push(activeNote[0]);
     },
     'stop_drag': function(child) {
       this.activeDrag = null;
