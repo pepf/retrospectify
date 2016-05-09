@@ -121,6 +121,9 @@ new Vue({
   },
   computed: {
     activeBoard: function() {
+      if (!Array.isArray(this.boards)) {
+        return this.createBoard();
+      }
       return this.boards[this.activeBoardIndex];
     }
   },
@@ -142,11 +145,7 @@ new Vue({
       this.activeBoardIndex = id;
     },
     'create-board' : function() {
-      var board = {
-        title: "New board",
-        notes: []
-      };
-      this.boards.push(board);
+      this.boards.push(this.createBoard());
       this.activeBoardIndex = this.boards.length-1;
     }
   },
@@ -173,6 +172,13 @@ new Vue({
       };
 
       this.activeBoard.notes.push(note)
+    },
+    createBoard: function() {
+      var board = {
+        title: "New board",
+        notes: []
+      };
+      return board;
     },
     onMouseMove: function(e) {
       if (this.activeDrag) {
