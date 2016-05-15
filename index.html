@@ -41,6 +41,11 @@
           <textarea @focus="setActive" v-el:"note-text" v-model="content"></textarea>
           <button @click="removeNote" class="note-remove">X</button>
         </div>
+        <!-- Note sub-menu, only shown when a note is in "edit state" -->
+        <div class="menu">
+          <button @click.stop="incrFontSize">A+</button>
+          <button @click.stop="decFontSize">A-</button>
+        </div>
       </div>
     </script>
 

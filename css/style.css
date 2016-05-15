@@ -176,6 +176,19 @@ span.heading {
   font-size: 1em;
   box-shadow: none;
 }
+.note .menu {
+  display:none;
+}
+.note.active .menu {
+  display:block;
+  position: absolute;
+  background-color: #ECECEC;
+  border: 1px solid #CCCCCC;
+  bottom: -47px;
+  height: 47px;
+  padding: 0.5em;
+  border-radius: 2px
+}
 
 /*
  * CSS transitions for components
