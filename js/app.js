@@ -66,7 +66,8 @@ new Vue({
       var note = {
         text: placeholderText,
         note_type: type,
-        position: {x:x, y:y}
+        position: {x:x, y:y},
+        fontSize: 1
       };
 
       this.activeBoard.notes.push(note)

@@ -3,7 +3,7 @@
  */
 Note = Vue.extend({
 
-  props: ['id','content', 'type', 'position'], //text
+  props: ['id','content', 'type', 'position', 'fontSize'], //text
 
   data: function() {
     return {
@@ -17,9 +17,6 @@ Note = Vue.extend({
       nStyle: {
         left: ""
       },
-
-      // Meta data
-      fontSize: 1, //em
 
       // Dragging data
       oldPosition: {},
