@@ -6,7 +6,7 @@
     <title>Vue JS retrospective demo</title>
   </head>
   <body>
-    <div id="app" @mousemove="onMouseMove">
+    <div id="app" @mousemove="onMouseMove" @click.stop="resetActive">
       <saved-boards :boards="boards" :active-board-index="activeBoardIndex" v-ref:savedboards></saved-boards>
       <div class="board-content">
         <div class="main_menu">
@@ -36,9 +36,11 @@
     <!-- The template for the note object -->
     <script type="text/x-template" id="custom-note-template">
       <div class="note" v-bind:class="nClass" v-bind:style="nStyle"
-        @mousedown="startDrag" @mouseup="stopDrag" @keyup.46="removeNote">
-        <textarea v-el:"note-text" v-model="content" @blur="stopEdit" ></textarea>
-        <button v-on:click="removeNote" class="note-remove">X</button>
+        @mousedown.stop="startDrag" @mouseup.stop="stopDrag" @click.stop="" @keyup.46="removeNote">
+        <div>
+          <textarea @focus="setActive" v-el:"note-text" v-model="content"></textarea>
+          <button @click="removeNote" class="note-remove">X</button>
+        </div>
       </div>
     </script>
 

@@ -127,13 +127,16 @@ span.heading {
   width: 200px;
   height: 150px;
   position: absolute;
-  overflow: hidden;
   border-radius: 3px;
   border: none;
   border-bottom: 1px solid #C1C1C1;
   box-shadow: 0px 0px 5px rgba(112, 112, 112, 0.45);
   transition: box-shadow 0.5s, transform 0.25s;
   cursor: -webkit-grab;
+}
+.note div {
+  overflow: hidden;
+  height:100%;
 }
 .note.improvement {
   background-color: #F0C4A4;
@@ -145,12 +148,12 @@ span.heading {
   background-color: #CAF8C7
 }
 
-.note.active {
+.note.dragging {
   box-shadow: 0px 0px 20px rgba(112, 112, 112, 0.45);
   transform: scale(1.05);
   cursor: -webkit-grabbing;
 }
-.note.editing {
+.note.active {
   box-shadow: 0px 0px 20px #8ACBD3;
 }
 .note textarea {

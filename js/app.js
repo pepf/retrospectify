@@ -5,7 +5,7 @@ var Note = Vue.extend({
     return {
       nClass: {
         active: false,
-        editing: false,
+        dragging: false,
         neutral: false,
         positive: false,
         improvement: false
@@ -15,34 +15,52 @@ var Note = Vue.extend({
       },
       oldPosition: {},
       tempPosition: {},
-      dragging: false,
       start: { x: 0, y: 0 }
     };
   },
   template: '#custom-note-template',
 
+  events: {
+    'reset-active' : function() {
+      this.nClass.active=false;
+    }
+  },
+
   methods: {
     removeNote: function () {
       this.$dispatch('remove', this["id"] );
     },
+    incrFontSize: function() {
+
+    },
+    decFontSize: function() {
+
+    },
+
+    setActive: function( e ) {
+      this.nClass.active = true;
+    },
     startDrag: function( e ) {
-      if ( this.nClass.editing ) {
-        return;
-      }
+      this.$dispatch("start_drag", this);
       this.nClass.active=true;
-      this.dragging = true;
       this.start.x = e.pageX;
       this.start.y = e.pageY;
       this.oldPosition = this.position;
-      this.$dispatch("start_drag", this);
       this.$on("global_mousemove", this.onMouseMove);
     },
     onMouseMove: function( e ) {
       var dx = e.pageX - this.start.x,
           dy = e.pageY - this.start.y;
-      if (this.dragging && e.buttons != 0 &&
+
+      if (e.buttons != 0 &&
          document.activeElement !== this.$el.querySelector("textarea")) {
         e.preventDefault();
+
+        if (Math.abs(dx) > 0 || Math.abs(dy) > 0) {
+          this.nClass.dragging = true;
+        } else {
+          this.nClass.dragging = false;
+        }
 
         var newX = this.oldPosition.x + dx,
             newY = this.oldPosition.y + dy;
@@ -56,16 +74,11 @@ var Note = Vue.extend({
       if( e.pageX - this.start.x === 0 &&
           e.pageY - this.start.y === 0 ) {
           this.$el.querySelector("textarea").focus();
-          this.nClass.editing = true;
+          this.nClass.active = true;
       }
-      this.dragging = false;
-      this.nClass.active = false;
+      this.nClass.dragging = false;
       this.$dispatch("stop_drag", this);
       this.$off("global_mousemove");
-    },
-    stopEdit: function( e ) {
-      this.$el.querySelector("textarea").blur();
-      this.nClass.editing = false;
     }
   },
 
@@ -132,6 +145,9 @@ new Vue({
       this.activeBoard.notes.splice( id, 1 );
     },
     'start_drag': function(child) {
+      //Reset the currently selected note
+      this.resetActive();
+
       this.activeDrag = child;
 
       //move an active note visually to the top
@@ -187,6 +203,9 @@ new Vue({
     },
     clear: function() {
       this.activeBoard.notes.splice(0, this.activeBoard.notes.length);
+    },
+    resetActive: function() {
+      this.$broadcast('reset-active');
     },
     toggleSidebar: function() {
       this.$broadcast('toggle-sidebar');
