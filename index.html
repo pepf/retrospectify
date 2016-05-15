@@ -38,8 +38,8 @@
       <div class="note" v-bind:class="nClass" v-bind:style="nStyle"
         @mousedown.stop="startDrag" @mouseup.stop="stopDrag" @click.stop="" @keyup.46="removeNote">
         <div>
-          <textarea @focus="setActive" v-el:"note-text" v-model="content"></textarea>
-          <button @click="removeNote" class="note-remove">X</button>
+          <textarea @focus="setActive" v-el:"note-text" v-model="content" v-bind:style="{ fontSize: fontSize + 'em' }"></textarea>
+          <button @click="removeNote" class="note-remove">✕</button>
         </div>
         <!-- Note sub-menu, only shown when a note is in "edit state" -->
         <div class="menu">

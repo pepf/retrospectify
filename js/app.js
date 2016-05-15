@@ -13,6 +13,11 @@ var Note = Vue.extend({
       nStyle: {
         left: ""
       },
+
+      // Meta data
+      fontSize: 1, //em
+
+      // Dragging data
       oldPosition: {},
       tempPosition: {},
       start: { x: 0, y: 0 }
@@ -31,10 +36,13 @@ var Note = Vue.extend({
       this.$dispatch('remove', this["id"] );
     },
     incrFontSize: function() {
+      var step = 0.5, max = 2.5;
+      this.fontSize = (this.fontSize + step <= max) ? this.fontSize + step : max;
 
     },
     decFontSize: function() {
-
+      var step = 0.5, min = 0.5;
+      this.fontSize = (this.fontSize - step >= min) ? this.fontSize - step : min;
     },
 
     setActive: function( e ) {
@@ -67,8 +75,10 @@ var Note = Vue.extend({
         this.nStyle.left = newX + "px";
         this.nStyle.top = newY + "px";
         this.position = {x: newX, y: newY };
-
+        
+        e.stopPropagation();
       }
+
     },
     stopDrag: function( e ) {
       if( e.pageX - this.start.x === 0 &&
