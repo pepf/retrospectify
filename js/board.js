@@ -10,7 +10,7 @@ SavedBoards = Vue.extend({
   } },
 
   template: '#saved-boards',
-  
+
   events: {
     'toggle-sidebar': function(e) {
       this.toggle();

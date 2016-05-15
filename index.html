@@ -14,7 +14,7 @@
           <div class="note_actions">
             <button class="positive" v-on:click="addNote('positive')">Positive note</button>
             <button class="neutral" v-on:click="addNote('neutral')">Neutral note</button>
-            <button class="improvement" v-on:click="addNote('improvement')">Improvement note</button>
+            <button class="negative" v-on:click="addNote('improvement')">Improvement note</button>
           </div>
           <div class="board_actions">
             <button v-on:click.stop="toggleSidebar">LOAD</button>
@@ -28,7 +28,7 @@
         <div class="notes">
           <div class="empty-state" v-show="!activeBoard.notes.length">this is a very empty screen</div>
           <custom-note v-for="note in activeBoard.notes" transition="flip" enter-stagger="100" :content.sync="note.text"
-            :type.sync="note.note_type" :id="$index" :position.sync="note.position" :font-size.sync="note.fontSize">
+            :type.sync="note.note_type" :id="$index" :position.sync="note.position" :font-size.sync="note.fontSize", :votes.sync="note.votes">
             </custom-note>
         </div>
       </div>
@@ -41,11 +41,17 @@
         <div>
           <textarea @focus="setActive" v-el:"note-text" v-model="content" v-bind:style="{ fontSize: fontSize + 'em' }"></textarea>
           <button @click="removeNote" class="note-remove">✕</button>
+          <div class="note-votes">
+            <span class="note-vote" v-for="n in votes" transition="flip"></span>
+          </div>
         </div>
         <!-- Note sub-menu, only shown when a note is in "edit state" -->
         <div class="menu">
           <button @click.stop="incrFontSize">A+</button>
           <button @click.stop="decFontSize">A-</button>
+          <button class="positive" @click.stop="addVote">+</button>
+          <button class="negative" @click.stop="removeVote" :disabled="votes<=0">-</button>
+          <span>{{votes}}</span>
         </div>
       </div>
     </script>

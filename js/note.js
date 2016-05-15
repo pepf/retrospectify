@@ -3,7 +3,9 @@
  */
 Note = Vue.extend({
 
-  props: ['id','content', 'type', 'position', 'fontSize'], //text
+  // All props that will be synced to our main app state via two-way binding
+  // A.k.a the most important data fields per note
+  props: ['id','content', 'type', 'position', 'fontSize', 'votes'],
 
   data: function() {
     return {
@@ -45,6 +47,12 @@ Note = Vue.extend({
     decFontSize: function() {
       var step = 0.5, min = 0.5;
       this.fontSize = (this.fontSize - step >= min) ? this.fontSize - step : min;
+    },
+    addVote: function() {
+      this.votes++;
+    },
+    removeVote: function() {
+      this.votes--;
     },
 
     setActive: function( e ) {

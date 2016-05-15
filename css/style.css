@@ -31,6 +31,10 @@ button {
   outline:none;
   transition: background-color 0.2s;
 }
+button[disabled] {
+  opacity:0.5;
+}
+
 button:hover {
   background-color: #C3CFCF;
 }
@@ -42,7 +46,7 @@ button:active {
 
 button.positive    { border-left: 10px solid #CAF8C7; }
 button.neutral     { border-left: 10px solid #ECECEC; }
-button.improvement { border-left: 10px solid #F0C4A4; }
+button.negative { border-left: 10px solid #F0C4A4; }
 
 /*Heading styles*/
 span.heading {
@@ -176,6 +180,26 @@ span.heading {
   font-size: 1em;
   box-shadow: none;
 }
+
+.note .note-votes {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 5px;
+    height: 20px;
+}
+
+.note .note-vote {
+    width: 1em;
+    height: 1em;
+    border-radius: 100%;
+    background-color: #5C97BF;;
+    display: inline-block;
+    margin-right: 0.5em;
+}
+
+
+
 .note .menu {
   display:none;
 }

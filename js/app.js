@@ -63,11 +63,13 @@ new Vue({
       var x = Math.floor( (Math.random() * 20 ) -10 ),
           y = Math.floor( (Math.random() * 20 ) -10 );
 
+      // Note default props
       var note = {
         text: placeholderText,
         note_type: type,
         position: {x:x, y:y},
-        fontSize: 1
+        fontSize: 1,
+        votes: 0
       };
 
       this.activeBoard.notes.push(note)
