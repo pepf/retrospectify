@@ -50,18 +50,30 @@ new Vue({
   methods: {
     addNote: function (type) {
       var placeholderText;
-
+      var terciary;
       switch (type) {
-        case "improvement": placeholderText = "This needs some improvement";
+        case "improvement":
+          placeholderText = "This needs some improvement";
+          terciary = 2;
         break;
-        case "neutral": placeholderText = "Just a remark";
+        case "neutral":
+          placeholderText = "Just a remark";
+          terciary = 1;
         break;
-        case "positive": placeholderText = "This went well";
+        case "positive":
+          placeholderText = "This went well";
+          terciary = 0;
         break;
       }
 
-      var x = Math.floor( (Math.random() * 20 ) -10 ),
+      var appWidth = this.$el.offsetWidth;
+      var typePosition = ((appWidth / 3 ) * terciary);
+
+      var x = Math.floor( (Math.random() * 20 ) -10 ) + typePosition,
           y = Math.floor( (Math.random() * 20 ) -10 );
+
+
+
 
       // Note default props
       var note = {
