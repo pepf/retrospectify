@@ -45,6 +45,11 @@ new Vue({
     'create-board' : function() {
       this.boards.push(this.createBoard());
       this.activeBoardIndex = this.boards.length-1;
+    },
+    'remove-board' : function( id ) {
+      this.boards.splice(id, 1 );
+      //Set active board to one less than the removed one
+      this.activeBoardIndex = id-1;
     }
   },
   methods: {

@@ -5,7 +5,7 @@ SavedBoards = Vue.extend({
 
   props: ['boards','activeBoardIndex'],
 
-  data: function() { return {
+  data: function() { return {bo
       expanded: false,
   } },
 
@@ -17,11 +17,14 @@ SavedBoards = Vue.extend({
     }
   },
   methods: {
-    loadBoard: function (id ) {
+    loadBoard: function ( id ) {
       this.$dispatch('load-board', id);
     },
-    createBoard: function () {
-      this.$dispatch('create-board');
+    createBoard: function ( id ) {
+      this.$dispatch('create-board', id);
+    },
+    removeBoard: function ( id ) {
+      this.$dispatch('remove-board', id);
     },
     toggle: function() {
       this.expanded = !this.expanded;

@@ -100,6 +100,15 @@ span.heading {
   background-color: #8E9FB3;
 }
 
+.sidebar .remove-board {
+  float: right;
+  opacity: 0.75;
+  cursor: pointer;
+}
+.sidebar .remove-board:hover {
+  opacity: 1.0;
+}
+
 .sidebar-overlay {
     position: absolute;
     top: 0;
