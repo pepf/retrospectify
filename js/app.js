@@ -50,7 +50,14 @@ new Vue({
       this.boards.splice(id, 1 );
       //Set active board to one less than the removed one
       this.activeBoardIndex = id-1;
-    }
+    },
+    'clear-board' : function() {
+      this.activeBoard.notes.splice(0, this.activeBoard.notes.length);
+    },
+    'save-boards' : function() {
+      this.saveState();
+    },
+
   },
   methods: {
     addNote: function (type) {
@@ -77,9 +84,6 @@ new Vue({
       var x = Math.floor( (Math.random() * 20 ) -10 ) + typePosition,
           y = Math.floor( (Math.random() * 20 ) -10 );
 
-
-
-
       // Note default props
       var note = {
         text: placeholderText,
@@ -103,9 +107,6 @@ new Vue({
         this.activeDrag.$emit("global_mousemove", e);
       }
     },
-    clear: function() {
-      this.activeBoard.notes.splice(0, this.activeBoard.notes.length);
-    },
     resetActive: function() {
       this.$broadcast('reset-active');
     },
@@ -125,14 +126,10 @@ new Vue({
     },
 
     // Saves current config to localstorage
-    saveState: function( e ) {
-      e.currentTarget.disabled = true;
-
+    saveState: function() {
       var storage = window.localStorage;
       var content = JSON.stringify( this.boards );
       storage.setItem('retrospective-board', content);
-
-      e.currentTarget.disabled = false;
     }
   },
 

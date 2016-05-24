@@ -46,7 +46,21 @@ button:active {
 
 button.positive    { border-left: 10px solid #CAF8C7; }
 button.neutral     { border-left: 10px solid #ECECEC; }
-button.negative { border-left: 10px solid #F0C4A4; }
+button.negative    { border-left: 10px solid #F0C4A4; }
+
+button.invert {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: #ABB7B7;
+  background-color: transparent;
+  box-shadow: none;
+}
+button.invert:hover {
+  color: white;
+}
+
+button + button {
+  margin: 0 0.5em;
+}
 
 /*Heading styles*/
 span.heading {
@@ -72,6 +86,14 @@ span.heading {
   padding: 0.5em 0;
 }
 
+.menu-toggle {
+  font-size: 2em;
+  color: #788181;
+  cursor: pointer;
+}
+.menu-toggle:hover {
+  color: #919C9C;
+}
 /* sidebar component styles */
 .sidebar {
     top: 0;
@@ -84,6 +106,15 @@ span.heading {
     padding: 1em;
     z-index: 2;
 }
+.sidebar .sidebar-menu {
+  clear:both;
+  display:block;
+  height: 2em;
+}
+.sidebar .sidebar-menu > * {
+  float:right;
+}
+
 .sidebar ul {
     list-style: none;
     padding: 0;
