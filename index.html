@@ -34,7 +34,7 @@
 
     <!-- The template for the note object -->
     <script type="text/x-template" id="custom-note-template">
-      <div class="note" v-bind:class="nClass" v-bind:style="nStyle"
+      <div class="note" v-bind:class="nClass" v-bind:style="cStyle"
         @mousedown.stop="startDrag" @mouseup.stop="stopDrag" @click.stop="" @keyup.46="removeNote">
         <div>
           <textarea @focus="setActive" v-el:"note-text" v-model="content" v-bind:style="{ fontSize: fontSize + 'em' }"></textarea>

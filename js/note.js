@@ -16,9 +16,6 @@ Note = Vue.extend({
         positive: false,
         improvement: false
       },
-      nStyle: {
-        left: ""
-      },
 
       // Dragging data
       oldPosition: {},
@@ -34,6 +31,15 @@ Note = Vue.extend({
       this.nClass.active=false;
     }
   },
+
+  computed: {
+    cStyle: function() {
+      return {
+        left: this.position.x + "px",
+        top: this.position.y + "px"
+      }
+    }
+  }
 
   methods: {
     removeNote: function () {
@@ -82,8 +88,6 @@ Note = Vue.extend({
 
         var newX = this.oldPosition.x + dx,
             newY = this.oldPosition.y + dy;
-        this.nStyle.left = newX + "px";
-        this.nStyle.top = newY + "px";
         this.position = {x: newX, y: newY };
 
         e.stopPropagation();
@@ -104,8 +108,6 @@ Note = Vue.extend({
 
   ready: function() {
     this.$nextTick(function () {
-      this.nStyle.left = this.position.x + "px";
-      this.nStyle.top = this.position.y + "px";
       this.nClass[this.type] = true;
     });
   }
