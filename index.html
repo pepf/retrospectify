@@ -42,7 +42,7 @@
           <div class="note-votes">
             <span class="note-vote" v-for="n in votes" transition="flip"></span>
           </div>
-          <div class="note-resize-handle" @mousedown.stop="startDrag($event, 'size')" @mouseup.stop="stopDrag"></div>
+          <div v-show="nClass.active" class="note-resize-handle" @mousedown.stop="startDrag($event, 'size')" @mouseup.stop="stopDrag"></div>
         </div>
         <!-- Note sub-menu, only shown when a note is in "edit state" -->
         <div class="menu">
