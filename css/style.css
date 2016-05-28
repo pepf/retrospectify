@@ -168,8 +168,6 @@ span.heading {
 }
 .note {
   background-color: #FFF;
-  width: 200px;
-  height: 150px;
   position: absolute;
   border-radius: 3px;
   border: none;
@@ -236,6 +234,16 @@ span.heading {
     background-color: #5C97BF;;
     display: inline-block;
     margin-right: 0.5em;
+}
+
+.note .note-resize-handle {
+  position: absolute;
+  bottom: 0;
+  right:  0;
+  width:  20px;
+  height: 20px;
+  cursor: se-resize;
+  background-color: rgba(0,0,0,0.1);
 }
 
 

@@ -5,7 +5,7 @@ Note = Vue.extend({
 
   // All props that will be synced to our main app state via two-way binding
   // A.k.a the most important data fields per note
-  props: ['id','content', 'type', 'position', 'fontSize', 'votes'],
+  props: ['id','content', 'type', 'position', 'noteSize', 'fontSize', 'votes'],
 
   data: function() {
     return {
@@ -19,8 +19,11 @@ Note = Vue.extend({
 
       // Dragging data
       oldPosition: {},
-      tempPosition: {},
-      start: { x: 0, y: 0 }
+      oldSize: {},
+      start: { x: 0, y: 0 },
+
+      // Defaults
+      // noteSize: {w: 200, h:150}
     };
   },
 
@@ -36,7 +39,9 @@ Note = Vue.extend({
     cStyle: function() {
       return {
         left: this.position.x + "px",
-        top: this.position.y + "px"
+        top: this.position.y + "px",
+        width: this.noteSize.w + 'px',
+        height: this.noteSize.h + 'px'
       }
     }
   },
@@ -64,14 +69,50 @@ Note = Vue.extend({
     setActive: function( e ) {
       this.nClass.active = true;
     },
-    startDrag: function( e ) {
+    startDrag: function( e, attribute ) {
       this.$dispatch("start_drag", this);
       this.nClass.active=true;
       this.start.x = e.pageX;
       this.start.y = e.pageY;
-      this.oldPosition = this.position;
-      this.$on("global_mousemove", this.onMouseMove);
+      if (attribute === "position") {
+        this.oldPosition = this.position;
+        this.$on("global_mousemove", this.onPositionMouseMove);
+      } else if (attribute === "size") {
+        this.oldSize = this.noteSize;
+        this.$on("global_mousemove", this.onSizeMouseMove);
+      }
     },
+
+    onPositionMouseMove: function ( e ) {
+      var pos = this.onMouseMove(e),
+          dx = pos[0], dy = pos[1];
+
+      if (Math.abs(dx) > 0 || Math.abs(dy) > 0) {
+        this.nClass.dragging = true;
+      } else {
+        this.nClass.dragging = false;
+      }
+
+      var newX = this.oldPosition.x + dx,
+          newY = this.oldPosition.y + dy;
+      this.position = {x: newX, y: newY };
+    },
+
+    onSizeMouseMove: function ( e ) {
+      var pos = this.onMouseMove(e),
+          dx = pos[0], dy = pos[1];
+
+      var newW = this.oldSize.w + dx,
+          newH = this.oldSize.h + dy;
+
+      if(newW < 100) { newW = 100; }
+      if(newH < 50) {  newH = 50; }
+
+      this.noteSize = {w: newW, h: newH};
+
+    },
+
+    //common onmousemove handler for click and drag events
     onMouseMove: function( e ) {
       var dx = e.pageX - this.start.x,
           dy = e.pageY - this.start.y;
@@ -79,20 +120,12 @@ Note = Vue.extend({
       if (e.buttons != 0 &&
          document.activeElement !== this.$el.querySelector("textarea")) {
         e.preventDefault();
-
-        if (Math.abs(dx) > 0 || Math.abs(dy) > 0) {
-          this.nClass.dragging = true;
-        } else {
-          this.nClass.dragging = false;
-        }
-
-        var newX = this.oldPosition.x + dx,
-            newY = this.oldPosition.y + dy;
-        this.position = {x: newX, y: newY };
-
         e.stopPropagation();
+        return [dx, dy];
+
       }
 
+      return false;
     },
     stopDrag: function( e ) {
       if( e.pageX - this.start.x === 0 &&
