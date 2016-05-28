@@ -244,14 +244,16 @@ span.heading {
   display:none;
 }
 .note.active .menu {
-  display:block;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
   position: absolute;
   background-color: #ECECEC;
-  border: 1px solid #CCCCCC;
+  border: 1px solid #CCC;
   bottom: -47px;
   height: 47px;
   padding: 0.5em;
-  border-radius: 2px
+  border-radius: 2px;
 }
 
 /*

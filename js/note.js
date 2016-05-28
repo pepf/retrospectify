@@ -39,7 +39,7 @@ Note = Vue.extend({
         top: this.position.y + "px"
       }
     }
-  }
+  },
 
   methods: {
     removeNote: function () {
