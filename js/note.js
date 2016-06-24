@@ -69,19 +69,6 @@ Note = Vue.extend({
     setActive: function( e ) {
       this.nClass.active = true;
     },
-    // startDrag: function( e, attribute ) {
-    //   this.$dispatch("start_drag", this);
-    //   this.nClass.active=true;
-    //   this.start.x = e.pageX;
-    //   this.start.y = e.pageY;
-    //   if (attribute === "position") {
-    //     this.oldPosition = this.position;
-    //     this.$on("global_mousemove", this.onPositionMouseMove);
-    //   } else if (attribute === "size") {
-    //     this.oldSize = this.noteSize;
-    //     this.$on("global_mousemove", this.onSizeMouseMove);
-    //   }
-    // },
 
     onPositionMouseMove: function ( d ) {
 
@@ -108,32 +95,6 @@ Note = Vue.extend({
       this.noteSize = {w: newW, h: newH};
 
     },
-
-    //common onmousemove handler for click and drag events
-  //   onMouseMove: function( e ) {
-  //     var dx = e.pageX - this.start.x,
-  //         dy = e.pageY - this.start.y;
-  //
-  //     if (e.buttons != 0 &&
-  //        document.activeElement !== this.$el.querySelector("textarea")) {
-  //       e.preventDefault();
-  //       e.stopPropagation();
-  //       return [dx, dy];
-  //
-  //     }
-  //
-  //     return false;
-  //   },
-  //   stopDrag: function( e ) {
-  //     if( e.pageX - this.start.x === 0 &&
-  //         e.pageY - this.start.y === 0 ) {
-  //         this.$el.querySelector("textarea").focus();
-  //         this.nClass.active = true;
-  //     }
-  //     this.nClass.dragging = false;
-  //     this.$dispatch("stop_drag", this);
-  //     this.$off("global_mousemove");
-  //   }
   },
 
   ready: function() {
