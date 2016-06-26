@@ -11,26 +11,27 @@ SavedBoards = Vue.extend({
 
   template: '#saved-boards',
 
-  events: {
-    'toggle-sidebar': function(e) {
-      this.toggle();
-    }
+  created: function() {
+    var self = this;
+    bus.$on('toggle-sidebar', function(e) {
+      self.toggle();
+    });
   },
   methods: {
     loadBoard: function ( id ) {
-      this.$dispatch('load-board', id);
+      bus.$emit('load-board', id);
     },
     createBoard: function ( id ) {
-      this.$dispatch('create-board', id);
+      bus.$emit('create-board', id);
     },
     removeBoard: function ( id ) {
-      this.$dispatch('remove-board', id);
+      bus.$emit('remove-board', id);
     },
     clearBoard: function() {
-      this.$dispatch('clear-board');
+      bus.$emit('clear-board');
     },
     saveBoards: function() {
-      this.$dispatch('save-boards');
+      bus.$emit('save-boards');
     },
     toggle: function() {
       this.expanded = !this.expanded;
