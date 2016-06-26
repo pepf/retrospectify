@@ -104,7 +104,7 @@ span.heading {
     color: #FFF;
     right: 0;
     padding: 1em;
-    z-index: 2;
+    z-index: 2000;
 }
 .sidebar .sidebar-menu {
   clear:both;
@@ -268,23 +268,26 @@ span.heading {
  * CSS transitions for components
 */
 /* always present */
-.slide-transition {
+.slide-enter-active,
+.slide-leave-active {
   transition: right .25s ease-out;
-  right: 0px;
 }
-
-/* .expand-enter defines the starting state for entering */
-/* .expand-leave defines the ending state for leaving */
-.slide-enter, .slide-leave {
+.slide-enter {
+  right: -300px;
+}
+.slide-leave-active{
   right: -300px;
 }
 
-.flip-transition {
+
+.flip-enter-active,
+.flip-leave-active {
   transition: transform 0.33s ease-out, opacity 0.5s ease-out;
-  opacity: 1.0;
   transform: translateY(0);
 }
-.flip-enter, .flip-leave {
+
+.flip-enter,
+.flip-leave-active {
   opacity: 0;
   transform: translateY(10px);
 }
