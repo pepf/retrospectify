@@ -6,8 +6,8 @@
     <title>Retrospectify</title>
   </head>
   <body>
-    <div id="app" @mousemove="onMouseMove" @click.stop="resetActive">
-      <saved-boards :boards="boards" :active-board-index="activeBoardIndex" v-ref:savedboards></saved-boards>
+    <div id="app" @click.stop="resetActive">
+      <saved-boards :boards="boards" :active-board-index="activeBoardIndex"></saved-boards>
       <div class="board-content">
         <div class="main_menu">
           <span class="heading">Retrospectify<sup>™</sup></span>
@@ -25,8 +25,10 @@
         </p>
         <div class="notes">
           <div class="empty-state" v-show="!activeBoard.notes.length">this is a very empty screen</div>
-          <custom-note v-for="note in activeBoard.notes" transition="flip" enter-stagger="100" :content.sync="note.text"
-            :type.sync="note.note_type" :id="$index" :position.sync="note.position" :note-size.sync="note.noteSize" :font-size.sync="note.fontSize", :votes.sync="note.votes">
+          <custom-note v-for="note in activeBoard.notes" transition="flip" enter-stagger="100" :content="note.text"
+            :type="note.note_type" :position="note.position" :id="note.id" :note-size="note.noteSize"
+            :font-size="note.fontSize" :votes="note.votes" :order="note.order" :active="note.id == activeDrag" @update="updateNote"
+            @stop-drag="stopDrag" @start-drag="startDrag">
             </custom-note>
         </div>
       </div>
@@ -37,9 +39,9 @@
       <div class="note" v-bind:class="nClass" v-bind:style="cStyle" v-draggable="onPositionMouseMove"
         @click.stop="" @keyup.46="removeNote">
         <div>
-          <textarea @focus="setActive" v-el:"note-text" v-model="content" v-bind:style="{ fontSize: fontSize + 'em' }"></textarea>
+          <textarea v-model="stateContent" v-bind:style="{ fontSize: fontSize + 'em' }"></textarea>
           <button @click="removeNote" class="note-remove">✕</button>
-          <div class="note-votes">
+          <div class="note-votes" v-show="votes > 0">
             <span class="note-vote" v-for="n in votes" transition="flip"></span>
           </div>
           <div v-show="nClass.active" class="note-resize-handle" v-draggable="onSizeMouseMove"></div>
@@ -65,9 +67,9 @@
           </p>
           <h2>Saved boards</h2>
           <ul>
-            <li v-for="board in boards" @click="loadBoard($index)" v-bind:class="{ 'active' : (activeBoardIndex == $index)}">
+            <li v-for="(board, index) in boards" @click="loadBoard(index)" v-bind:class="{ 'active' : (activeBoardIndex == index)}">
               {{ board.title }}
-              <span class="remove-board" title="remove" @click="removeBoard($index)" v-show="boards.length > 1">✕</span>
+              <span class="remove-board" title="remove" @click="removeBoard(index)" v-show="boards.length > 1">✕</span>
             </li>
           </ul>
           <button @click="createBoard">+ New</button>
@@ -78,6 +80,7 @@
 
     <!-- All other js files -->
     <script src="js/vue.dev.js"></script>
+    <script>var bus = new Vue();</script>
     <script src="js/directive.js"></script>
     <script src="js/note.js"></script>
     <script src="js/board.js"></script>

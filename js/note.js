@@ -5,7 +5,22 @@ Note = Vue.extend({
 
   // All props that will be synced to our main app state via two-way binding
   // A.k.a the most important data fields per note
-  props: ['id','content', 'type', 'position', 'noteSize', 'fontSize', 'votes'],
+  props: {
+    'id': {type:Number, required:true},
+    'active': {type: Boolean, default: false},
+    'order': {type:Number, default: 0},
+    'content': String,
+    'type' : String,
+    'position': {
+      type: Object,
+      default:function() {
+        return {x:0, y:0}
+      }
+    },
+    'noteSize': Object,
+    'fontSize': Number,
+    'votes': Number,
+  },
 
   data: function() {
     return {
@@ -16,72 +31,82 @@ Note = Vue.extend({
         positive: false,
         improvement: false
       },
-
-      // Dragging data
-      oldPosition: {},
-      oldSize: {},
-      start: { x: 0, y: 0 },
-
-      // Defaults
-      // noteSize: {w: 200, h:150}
+      stateContent: this.content,
     };
   },
 
   template: '#custom-note-template',
 
-  events: {
-    'reset-active' : function() {
-      this.nClass.active=false;
-    }
-  },
-
   computed: {
     cStyle: function() {
-      return {
-        left: this.position.x + "px",
-        top: this.position.y + "px",
-        width: this.noteSize.w + 'px',
-        height: this.noteSize.h + 'px'
+      var style = {};
+      if (this.position) {
+        style.left = this.position.x + "px";
+        style.top = this.position.y + "px";
       }
+      if (this.noteSize) {
+        style.width = this.noteSize.w + "px";
+        style.height = this.noteSize.h + "px";
+      }
+      style.zIndex = this.order;
+
+      return style;
+    },
+    nClass: function() {
+      var output =  {};
+      output.active = this.active;
+      output.dragging = this.dragging;
+      output[this.type] = true;
+      return output;
     }
   },
 
   methods: {
     removeNote: function () {
-      this.$dispatch('remove', this["id"] );
+      bus.$emit('remove-note', this["id"] );
     },
-    incrFontSize: function() {
+    incrFontSize: function(e) {
       var step = 0.5, max = 2.5;
-      this.fontSize = (this.fontSize + step <= max) ? this.fontSize + step : max;
+      var newFontSize = (this.fontSize + step <= max) ? this.fontSize + step : max;
+      this.$emit('update', this.id, {fontSize: newFontSize });
 
     },
-    decFontSize: function() {
+    decFontSize: function(e) {
       var step = 0.5, min = 0.5;
-      this.fontSize = (this.fontSize - step >= min) ? this.fontSize - step : min;
+      var newFontSize = (this.fontSize - step >= min) ? this.fontSize - step : min;
+      this.$emit('update', this.id, {fontSize: newFontSize });
     },
-    addVote: function() {
-      this.votes++;
+    addVote: function(e) {
+      this.$emit('update', this.id, {votes: this.votes+1});
     },
-    removeVote: function() {
-      this.votes--;
-    },
-
-    setActive: function( e ) {
-      this.nClass.active = true;
+    removeVote: function(e) {
+      this.$emit('update', this.id, {votes: this.votes-1});
     },
 
     onPositionMouseMove: function ( d ) {
 
       if (Math.abs(d.dx) > 0 || Math.abs(d.dy) > 0) {
-        this.nClass.dragging = true;
+        this.dragging = true;
       } else {
-        this.nClass.dragging = false;
+        this.dragging = false;
       }
 
       var newX = this.position.x + d.dx,
-          newY = this.position.y + d.dy;
+          newY = this.position.y + d.dy,
+          position = {x: newX, y: newY};
 
-      this.position = {x: newX, y: newY };
+      this.$emit('update', this.id, { position : position });
+    },
+
+    onPositionMouseMoveStart: function() {
+      // console.log("dragging started! on id: " + this.id);
+      this.$emit('start-drag', this.id);
+    },
+
+    onPositionMouseMoveStop: function() {
+      this.dragging = false;
+      // console.log("dragging stopped");
+      this.$emit('stop-drag', this.id);
     },
 
     onSizeMouseMove: function ( d ) {
@@ -92,12 +117,29 @@ Note = Vue.extend({
       if(newW < 100) { newW = 100; }
       if(newH < 50) {  newH = 50; }
 
-      this.noteSize = {w: newW, h: newH};
-
-    },
+      var noteSize = {w: newW, h: newH};
+      this.$emit('update', this.id, { noteSize : noteSize });
+    }
   },
 
-  ready: function() {
+  watch: {
+    /** listen to input field with content, emit event when changed **/
+    stateContent: function(newText, oldText) {
+      if (newText !== oldText) {
+        this.$emit('update', this.id, {text: newText})
+      }
+    }
+  },
+
+  created: function() {
+    var self = this;
+    // bus.$on('reset-active', function() {
+    //   self.nClass.active=false;
+    // });
+
+  },
+
+  mounted: function() {
     this.$nextTick(function () {
       this.nClass[this.type] = true;
     });

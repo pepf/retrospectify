@@ -7,8 +7,8 @@ Vue.component('saved-boards', SavedBoards);
 new Vue({
   el: '#app',
   data: {
-    activeDrag: null,
     activeBoardIndex: 0,
+    activeDrag: null,
     boards: [ {
       title: "My retrospective for <date>",
       notes: []
@@ -22,43 +22,40 @@ new Vue({
       return this.boards[this.activeBoardIndex];
     }
   },
-  events: {
-    'remove' : function( id ) {
-      this.activeBoard.notes.splice( id, 1 );
-    },
-    'start_drag': function(child) {
-      //Reset the currently selected note
-      this.resetActive();
 
-      this.activeDrag = child;
+  beforeMount: function() {
+    var self = this;
 
-      //move an active note visually to the top
-      var activeNote = this.activeBoard.notes.splice( child.id, 1 );
-      this.activeBoard.notes.push(activeNote[0]);
-    },
-    'stop_drag': function(child) {
-      this.activeDrag = null;
-    },
-    'load-board' : function( id ) {
-      this.activeBoardIndex = id;
-    },
-    'create-board' : function() {
-      this.boards.push(this.createBoard());
-      this.activeBoardIndex = this.boards.length-1;
-    },
-    'remove-board' : function( id ) {
-      this.boards.splice(id, 1 );
+    bus.$on('remove-note', function(id) {
+      var note = self.getNoteById(id);
+      var noteIndex = self.activeBoard.notes.indexOf(note);
+      self.activeBoard.notes.splice( noteIndex, 1 );
+    });
+
+    bus.$on('load-board', function(id) {
+      self.activeBoardIndex = id;
+    });
+
+    bus.$on('create-board', function(id) {
+      self.boards.push(self.createBoard());
+      self.activeBoardIndex = self.boards.length -1;
+    });
+
+    bus.$on('remove-board', function(id) {
+      self.boards.splice(id, 1 );
       //Set active board to one less than the removed one
-      this.activeBoardIndex = id-1;
-    },
-    'clear-board' : function() {
-      this.activeBoard.notes.splice(0, this.activeBoard.notes.length);
-    },
-    'save-boards' : function() {
-      this.saveState();
-    },
+      self.activeBoardIndex = id-1;
+    });
 
+    bus.$on('clear-board', function() {
+      self.activeBoard.notes.splice(0, self.activeBoard.notes.length);
+    });
+
+    bus.$on('save-boards', function() {
+      self.saveState();
+    });
   },
+
   methods: {
     addNote: function (type) {
       var placeholderText;
@@ -91,11 +88,50 @@ new Vue({
         position: {x:x, y:y},
         noteSize: {w: 200, h:150},
         fontSize: 1,
-        votes: 0
+        votes: 0,
+        order: 0,
+        id: Math.round(Math.random()*100000)
       };
 
       this.activeBoard.notes.push(note)
     },
+
+    getNoteById: function(id) {
+      return this.activeBoard.notes.find( function(note) {
+        return id === note.id;
+      });
+    },
+
+    updateNote: function(id, update) {
+      var note = this.getNoteById(id);
+      if (note) {
+        Object.assign(note, update);
+      } else {
+        throw "Where's the note!?";
+      }
+      return note;
+    },
+
+    startDrag: function(id) {
+      var maxOrder = this.activeBoard.notes.reduce( function(prev, value) {
+        if (typeof value.order === "undefined" ) { return prev; }
+        return ( prev > value.order ? prev : value.order );
+      }, 0);
+      var note = this.getNoteById(id);
+
+      // This note already is the top one, dont add 1
+      if (note.order === maxOrder && maxOrder > 0) {
+        return;
+      } else {
+        this.updateNote(id, {order: maxOrder + 1 });
+      }
+
+      this.activeDrag = id;
+    },
+    stopDrag: function(id) {
+      this.updateNote(id, {active: false });
+    },
+
     createBoard: function() {
       var board = {
         title: "New board",
@@ -103,16 +139,11 @@ new Vue({
       };
       return board;
     },
-    onMouseMove: function(e) {
-      if (this.activeDrag) {
-        this.activeDrag.$emit("global_mousemove", e);
-      }
-    },
     resetActive: function() {
-      this.$broadcast('reset-active');
+      bus.$emit('reset-active');
     },
     toggleSidebar: function() {
-      this.$broadcast('toggle-sidebar');
+      bus.$emit('toggle-sidebar');
     },
 
     // Loads recent config from localstorage

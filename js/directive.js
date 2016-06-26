@@ -7,70 +7,100 @@ Vue.directive('draggable', {
   isFn: true,
   acceptStatement: true,
 
-  start: {x: 0, y:0},
+  bind: function (el, binding, vNode) {
 
-  bind: function () {
+    var MouseMove = function ( e ) {
+      var start = this.start;
+      var dx = e.pageX - start.x,
+          dy = e.pageY - start.y,
+          data = {dx: dx, dy: dy};
+
+      if (e.buttons == 0) {
+        this.onMouseUp();
+        return;
+      }
+
+      //only dispatch relative data for now
+      if(this.prev) {
+        data.dx -= this.prev.dx;
+        data.dy -= this.prev.dy;
+      }
+      this.prev = {dx: dx, dy: dy};
+
+      if (this.callback) {
+        this.callback.call(vNode.context, data);
+      }
+      e.stopImmediatePropagation();
+    };
+
+    var MouseDown = function ( e ) {
+
+      this.start = {
+        x: e.pageX,
+        y: e.pageY
+      };
+
+      if (this.callbackStart) {
+        this.callbackStart.call(vNode.context);
+      }
+
+      window.addEventListener("mousemove", this.onMouseMove);
+      e.stopImmediatePropagation();
+    };
+
+    var MouseUp = function ( e ) {
+      if (this.callbackStop) {
+        this.callbackStop.call(vNode.context);
+      }
+      this.prev = null;
+      window.removeEventListener("mousemove", this.onMouseMove);
+    };
+
+
     // do preparation work
-    // e.g. add event listeners or expensive stuff
+    // e.g. add event listeners or other expensive stuff
     // that needs to be run only once
-    this.onMouseMove = this.MouseMove.bind(this);
-    this.onMouseDown = this.MouseDown.bind(this);
-    this.onMouseUp   = this.MouseUp.bind(this);
+    el.start = {x: 0, y:0},
+    el.onMouseMove = MouseMove.bind(el);
+    el.onMouseDown = MouseDown.bind(el);
+    el.onMouseUp  =  MouseUp.bind(el);
 
-    this.el.addEventListener('mousedown', this.onMouseDown);
-    this.el.addEventListener('mouseup', this.onMouseUp);
+    el.addEventListener('mousedown', el.onMouseDown);
+    el.addEventListener('mouseup',   el.onMouseUp);
 
-  },
-  update: function (fn) {
-    // do something based on the updated value
-    // this will also be called for the initial value
-    // console.log("set event handler to:");
+    if(!binding.expression) {
+      throw "No callback defined";
+    }
 
+    //pointer to the function to call on Drag
+    var fn = vNode.context[binding.expression];
     if (typeof fn === "function") {
-      this.callback = fn;
+      el.callback = fn;
     } else {
       console.warn("Callback should be a function!");
     }
+
+    // Based the Naming of the callback, see if theres also a start and stop
+    // function defined. If so, use these and call them at the appropriate times
+    // Start: When starting to drag
+    // Stop:  When dragging has Stoped
+    var fnStart = vNode.context[binding.expression+"Start"];
+    if (typeof fnStart === "function") {
+      el.callbackStart = fnStart;
+    }
+
+    var fnStop = vNode.context[binding.expression+"Stop"];
+    if (typeof fnStop === "function") {
+      el.callbackStop = fnStop;
+    }
+
   },
 
-  unbind: function () {
+  unbind: function (el, binding) {
     // do clean up work
     // e.g. remove event listeners added in bind()
-    this.el.removeEventListener("mousedown", this.onMouseDown);
-    this.el.removeEventListener("mouseup",   this.onMouseUp);
-    window.removeEventListener("mousemove",  this.onMouseMove);
-  },
-
-  MouseMove: function ( e ) {
-    var dx = e.pageX - this.start.x,
-        dy = e.pageY - this.start.y,
-        data = {dx: dx, dy: dy};
-
-    //only dispatch relative data for now
-    if(this.prev) {
-      data.dx -= this.prev.dx;
-      data.dy -= this.prev.dy;
-    }
-    this.prev = {dx: dx, dy: dy};
-
-    if (this.callback) {
-      this.callback.call(this.vm, data);
-    }
-  },
-
-  MouseDown: function ( e ) {
-
-    this.start = {
-      x: e.pageX,
-      y: e.pageY
-    };
-
-    window.addEventListener("mousemove", this.onMouseMove);
-    e.stopPropagation();
-  },
-
-  MouseUp: function ( e ) {
-    this.prev = null;
-    window.removeEventListener("mousemove", this.onMouseMove);
+    el.removeEventListener("mousedown", el.onMouseDown);
+    el.removeEventListener("mouseup",   el.onMouseUp);
+    window.removeEventListener("mousemove",  el.onMouseMove);
   }
 })
