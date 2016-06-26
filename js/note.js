@@ -18,8 +18,8 @@ Note = Vue.extend({
       }
     },
     'noteSize': Object,
-    'fontSize': Number,
-    'votes': Number,
+    'fontSize': {type:Number, default: 1},
+    'votes': {type:Number, default: 0}
   },
 
   data: function() {
@@ -99,13 +99,11 @@ Note = Vue.extend({
     },
 
     onPositionMouseMoveStart: function() {
-      // console.log("dragging started! on id: " + this.id);
       this.$emit('start-drag', this.id);
     },
 
     onPositionMouseMoveStop: function() {
       this.dragging = false;
-      // console.log("dragging stopped");
       this.$emit('stop-drag', this.id);
     },
 
@@ -129,19 +127,5 @@ Note = Vue.extend({
         this.$emit('update', this.id, {text: newText})
       }
     }
-  },
-
-  created: function() {
-    var self = this;
-    // bus.$on('reset-active', function() {
-    //   self.nClass.active=false;
-    // });
-
-  },
-
-  mounted: function() {
-    this.$nextTick(function () {
-      this.nClass[this.type] = true;
-    });
   }
 })
