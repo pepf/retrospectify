@@ -27,8 +27,9 @@ new Vue({
     var self = this;
 
     bus.$on('remove-note', function(id) {
-      var note = self.getNoteById(id);
-      var noteIndex = self.activeBoard.notes.indexOf(note);
+      var noteIndex = self.activeBoard.notes.findIndex( function(note) {
+        return (id === note.id);
+      });
       self.activeBoard.notes.splice( noteIndex, 1 );
     });
 

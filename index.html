@@ -25,7 +25,7 @@
         </p>
         <div class="notes">
           <div class="empty-state" v-show="!activeBoard.notes.length">this is a very empty screen</div>
-          <custom-note v-for="note in activeBoard.notes" transition="flip" :content="note.text"
+          <custom-note v-for="note in activeBoard.notes" :key="note.id" transition="flip" :content="note.text"
             :type="note.note_type" :position="note.position" :id="note.id" :note-size="note.noteSize"
             :font-size="note.fontSize" :votes="note.votes" :order="note.order" :active="note.id == activeDrag" @update="updateNote"
             @stop-drag="stopDrag" @start-drag="startDrag">

@@ -63,7 +63,7 @@ Note = Vue.extend({
 
   methods: {
     removeNote: function () {
-      bus.$emit('remove-note', this["id"] );
+      bus.$emit('remove-note', this.id );
     },
     incrFontSize: function(e) {
       var step = 0.5, max = 2.5;
