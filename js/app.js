@@ -88,6 +88,9 @@ new Vue({
         note_type: type,
         position: {x:x, y:y},
         noteSize: {w: 200, h:150},
+        fontSize: 1,
+        votes: 0,
+        order: 0,
         id: Math.round(Math.random()*100000)
       };
 
