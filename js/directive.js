@@ -1,6 +1,15 @@
 /**
- * A start for a draggable directive, making it easier to respond to drag
- * events in Vue
+ * A start for a draggable directive, making it easier to use drag event data
+ * in Vue components
+ *
+ * Usage:
+ * Inside the component set "v-draggable" to point to the function you want
+ * to call each time a drag is being done. This callback is called with the delta
+ * of your drag as arguments.
+ *
+ * Additionally you can append the functionname with "Start" and "Stop" in order
+ * to do some more things when just starting the drag or when stopping the drag
+ * event
  */
 
 Vue.directive('draggable', {
