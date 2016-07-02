@@ -117,6 +117,9 @@ new Vue({
       }, 0);
       var note = this.getNoteById(id);
 
+      // Set as active
+      this.activeDrag = id;
+
       // This note already is the top one, dont add 1
       if (note.order === maxOrder && maxOrder > 0) {
         return;
@@ -124,7 +127,6 @@ new Vue({
         this.updateNote(id, {order: maxOrder + 1 });
       }
 
-      this.activeDrag = id;
     },
     stopDrag: function(id) {
       this.updateNote(id, {active: false });
@@ -138,7 +140,7 @@ new Vue({
       return board;
     },
     resetActive: function() {
-      bus.$emit('reset-active');
+      this.activeDrag = null;
     },
     toggleSidebar: function() {
       bus.$emit('toggle-sidebar');
