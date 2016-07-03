@@ -7,6 +7,7 @@ SavedBoards = Vue.extend({
 
   data: function() { return {
       expanded: false,
+      version: VERSION
   } },
 
   template: '#saved-boards',

@@ -58,6 +58,12 @@ button.invert:hover {
   color: white;
 }
 
+button.invert.small {
+    border: none;
+    font-size: 0.8em;
+    line-height: 19px;
+}
+
 button + button {
   margin: 0 0.5em;
 }
@@ -147,6 +153,13 @@ span.heading {
     right: 0;
     bottom: 0;
     z-index: 1;
+}
+.sidebar .about {
+  position: absolute;
+  bottom: 0;
+  font-size: 0.6em;
+  padding: 1em;
+  right: 0;
 }
 
 /*Component styles*/
