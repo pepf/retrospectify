@@ -2,6 +2,7 @@
 Vue.component('custom-note', Note);
 Vue.component('saved-boards', SavedBoards);
 
+var VERSION = 1.0;
 
 // root app
 new Vue({
@@ -151,6 +152,10 @@ new Vue({
       var storage = window.localStorage;
 
       //Check if there is saved content available
+      if (storage.getItem('retrospective-version') !== VERSION) {
+        this.migrateState();
+      }
+
       var loadedContent = storage.getItem('retrospective-board');
       if ( loadedContent ) {
         this.boards = JSON.parse(loadedContent);
@@ -162,11 +167,41 @@ new Vue({
       var storage = window.localStorage;
       var content = JSON.stringify( this.boards );
       storage.setItem('retrospective-board', content);
+    },
+
+    migrateState: function() {
+      var storage = window.localStorage;
+
+      var i = 0;
+      // Try to migrate data from older versions
+      var oldState = storage.getItem('retrospective-board');
+
+      // Data to migrate
+      if (oldState)  {
+        var data = JSON.parse(oldState);
+        data.forEach( function( board ) {
+          if (!board.notes) return;
+          board.notes.forEach( function( note ) {
+            // Check props for each note
+            if (!note.id) {
+              note.id = i;
+            }
+            i++;
+          });
+        });
+        data = JSON.stringify( data );
+
+        //Write updated item back to localStorage
+        storage.setItem('retrospective-board', data);
+      }
+
+      // If migration succeeds, save version number in localStorage
+      storage.setItem("retrospective-version", VERSION);
     }
   },
 
   created: function() {
     this.loadState();
-    window.blaat = this;
+    this.migrateState();
   }
 })
