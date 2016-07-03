@@ -13,6 +13,14 @@ textarea, input {
   outline: none;
   font-family: sans-serif;
 }
+
+/**
+ * Utility class
+ */
+.hidden {
+  visibility: hidden;
+}
+
 #app {
   position:absolute;
   top: 0; right:0; bottom: 0; left: 0;
@@ -75,6 +83,9 @@ span.heading {
   vertical-align: initial;
   margin-right: 1em;
 }
+span.subtle {
+  color: #ABB7B7;
+}
 
 .main_menu {
   display:flex;
@@ -92,14 +103,6 @@ span.heading {
   padding: 0.5em 0;
 }
 
-.menu-toggle {
-  font-size: 2em;
-  color: #788181;
-  cursor: pointer;
-}
-.menu-toggle:hover {
-  color: #919C9C;
-}
 /* sidebar component styles */
 .sidebar {
     top: 0;

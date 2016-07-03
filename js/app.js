@@ -10,9 +10,12 @@ new Vue({
   data: {
     activeBoardIndex: 0,
     activeDrag: null,
+    unsavedChanges: false,
+
     boards: [ {
       title: "My retrospective for <date>",
-      notes: []
+      notes: [],
+      initial: true,
     } ]
   },
   computed: {
@@ -104,6 +107,11 @@ new Vue({
     updateNote: function(id, update) {
       var note = this.getNoteById(id);
       if (note) {
+
+        // The whole board is not "initial" anymore
+        if (this.activeBoard.initial) { delete this.activeBoard.initial; }
+
+        // Update note properties
         Object.assign(note, update);
       } else {
         throw "Where's the note!?";
@@ -131,6 +139,10 @@ new Vue({
     },
     stopDrag: function(id) {
       this.updateNote(id, {active: false });
+    },
+
+    saveBoards: function() {
+      bus.$emit('save-boards');
     },
 
     createBoard: function() {
@@ -167,6 +179,7 @@ new Vue({
       var storage = window.localStorage;
       var content = JSON.stringify( this.boards );
       storage.setItem('retrospective-board', content);
+      this.unsavedChanges = false;
     },
 
     migrateState: function() {
@@ -200,8 +213,19 @@ new Vue({
     }
   },
 
+  watch: {
+    'boards': {
+      handler: function (newVal, oldVal) {
+        //check if we're loading the app for the first time
+        if (!oldVal[0].initial) {
+          this.unsavedChanges = true;
+        }
+      },
+      deep: true //watch EVERYTHING
+    }
+  },
+
   created: function() {
     this.loadState();
-    this.migrateState();
   }
 })
