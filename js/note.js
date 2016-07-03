@@ -24,14 +24,8 @@ Note = Vue.extend({
 
   data: function() {
     return {
-      nClass: {
-        active: false,
-        dragging: false,
-        neutral: false,
-        positive: false,
-        improvement: false
-      },
-      stateContent: this.content,
+      dragging: false,
+      stateContent: this.content
     };
   },
 

@@ -2,6 +2,7 @@
 Vue.component('custom-note', Note);
 Vue.component('saved-boards', SavedBoards);
 
+var VERSION = 1.0;
 
 // root app
 new Vue({
@@ -9,9 +10,12 @@ new Vue({
   data: {
     activeBoardIndex: 0,
     activeDrag: null,
+    unsavedChanges: false,
+
     boards: [ {
       title: "My retrospective for <date>",
-      notes: []
+      notes: [],
+      initial: true,
     } ]
   },
   computed: {
@@ -106,6 +110,11 @@ new Vue({
     updateNote: function(id, update) {
       var note = this.getNoteById(id);
       if (note) {
+
+        // The whole board is not "initial" anymore
+        if (this.activeBoard.initial) { delete this.activeBoard.initial; }
+
+        // Update note properties
         Object.assign(note, update);
       } else {
         throw "Where's the note!?";
@@ -120,6 +129,9 @@ new Vue({
       }, 0);
       var note = this.getNoteById(id);
 
+      // Set as active
+      this.activeDrag = id;
+
       // This note already is the top one, dont add 1
       if (note.order === maxOrder && maxOrder > 0) {
         return;
@@ -127,10 +139,13 @@ new Vue({
         this.updateNote(id, {order: maxOrder + 1 });
       }
 
-      this.activeDrag = id;
     },
     stopDrag: function(id) {
       this.updateNote(id, {active: false });
+    },
+
+    saveBoards: function() {
+      bus.$emit('save-boards');
     },
 
     createBoard: function() {
@@ -141,7 +156,7 @@ new Vue({
       return board;
     },
     resetActive: function() {
-      bus.$emit('reset-active');
+      this.activeDrag = null;
     },
     toggleSidebar: function() {
       bus.$emit('toggle-sidebar');
@@ -152,6 +167,10 @@ new Vue({
       var storage = window.localStorage;
 
       //Check if there is saved content available
+      if (storage.getItem('retrospective-version') !== VERSION) {
+        this.migrateState();
+      }
+
       var loadedContent = storage.getItem('retrospective-board');
       if ( loadedContent ) {
         this.boards = JSON.parse(loadedContent);
@@ -163,11 +182,53 @@ new Vue({
       var storage = window.localStorage;
       var content = JSON.stringify( this.boards );
       storage.setItem('retrospective-board', content);
+      this.unsavedChanges = false;
+    },
+
+    migrateState: function() {
+      var storage = window.localStorage;
+
+      var i = 0;
+      // Try to migrate data from older versions
+      var oldState = storage.getItem('retrospective-board');
+
+      // Data to migrate
+      if (oldState)  {
+        var data = JSON.parse(oldState);
+        data.forEach( function( board ) {
+          if (!board.notes) return;
+          board.notes.forEach( function( note ) {
+            // Check props for each note
+            if (!note.id) {
+              note.id = i;
+            }
+            i++;
+          });
+        });
+        data = JSON.stringify( data );
+
+        //Write updated item back to localStorage
+        storage.setItem('retrospective-board', data);
+      }
+
+      // If migration succeeds, save version number in localStorage
+      storage.setItem("retrospective-version", VERSION);
+    }
+  },
+
+  watch: {
+    'boards': {
+      handler: function (newVal, oldVal) {
+        //check if we're loading the app for the first time
+        if (!oldVal[0].initial) {
+          this.unsavedChanges = true;
+        }
+      },
+      deep: true //watch EVERYTHING
     }
   },
 
   created: function() {
     this.loadState();
-    window.blaat = this;
   }
 })

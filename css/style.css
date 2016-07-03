@@ -13,6 +13,14 @@ textarea, input {
   outline: none;
   font-family: sans-serif;
 }
+
+/**
+ * Utility class
+ */
+.hidden {
+  visibility: hidden;
+}
+
 #app {
   position:absolute;
   top: 0; right:0; bottom: 0; left: 0;
@@ -58,6 +66,12 @@ button.invert:hover {
   color: white;
 }
 
+button.invert.small {
+    border: none;
+    font-size: 0.8em;
+    line-height: 19px;
+}
+
 button + button {
   margin: 0 0.5em;
 }
@@ -68,6 +82,9 @@ span.heading {
   font-size: 1.5em;
   vertical-align: initial;
   margin-right: 1em;
+}
+span.subtle {
+  color: #ABB7B7;
 }
 
 .main_menu {
@@ -86,14 +103,6 @@ span.heading {
   padding: 0.5em 0;
 }
 
-.menu-toggle {
-  font-size: 2em;
-  color: #788181;
-  cursor: pointer;
-}
-.menu-toggle:hover {
-  color: #919C9C;
-}
 /* sidebar component styles */
 .sidebar {
     top: 0;
@@ -147,6 +156,13 @@ span.heading {
     right: 0;
     bottom: 0;
     z-index: 1;
+}
+.sidebar .about {
+  position: absolute;
+  bottom: 0;
+  font-size: 0.6em;
+  padding: 1em;
+  right: 0;
 }
 
 /*Component styles*/
