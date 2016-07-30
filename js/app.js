@@ -94,7 +94,7 @@ new Vue({
         noteSize: {w: 200, h:150},
         fontSize: 1,
         votes: 0,
-        order: 0,
+        order: this.getMaxOrder()+1,
         id: Math.round(Math.random()*100000)
       };
 
@@ -122,11 +122,15 @@ new Vue({
       return note;
     },
 
-    startDrag: function(id) {
-      var maxOrder = this.activeBoard.notes.reduce( function(prev, value) {
+    getMaxOrder: function () {
+      return this.activeBoard.notes.reduce( function(prev, value) {
         if (typeof value.order === "undefined" ) { return prev; }
         return ( prev > value.order ? prev : value.order );
       }, 0);
+    },
+
+    startDrag: function(id) {
+      var maxOrder = this.getMaxOrder();
       var note = this.getNoteById(id);
 
       // Set as active
