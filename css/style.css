@@ -315,7 +315,7 @@ span.subtle {
  * @NOTE Yes the design is desktop first, so I'm going
  * to use max-width to bundle all exceptions here for now
  */
- @media screen and (max-width: 420px) and (orientation: portrait) {
+ @media screen and (max-width: 768px) {
    button {
      padding:0.75em;
    }
