@@ -307,3 +307,55 @@ span.subtle {
   opacity: 0;
   transform: translateY(10px);
 }
+
+
+/**
+ * Responsive styles
+ *
+ * @NOTE Yes the design is desktop first, so I'm going
+ * to use max-width to bundle all exceptions here for now
+ */
+ @media screen and (max-width: 420px) and (orientation: portrait) {
+   button {
+     padding:0.75em;
+   }
+   .main_menu {
+     display: block;
+   }
+   .heading {
+     display:block;
+     margin-bottom: 1em 0;
+   }
+   .note_actions {
+     display: flex;
+     margin: 1em 0;
+   }
+   .note {
+     position: static;
+     height: auto !important;
+     width: 100% !important;
+     margin: 0.5em 0;
+   }
+   .note.active {
+     border: 1px solid #8ACBD3;
+   }
+   .note .note-votes {
+     position: static;
+     margin: 0.5em;
+   }
+   .note button.note-remove {
+     display: none;
+   }
+   .note:last-child {
+     margin-bottom: 3em;
+   }
+   .note textarea {
+     resize: none;
+   }
+   .note.active .menu {
+     position: fixed;
+     left:0;
+     right: 0;
+     bottom: 0;
+   }
+ }
