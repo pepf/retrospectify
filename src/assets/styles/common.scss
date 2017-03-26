@@ -1,4 +1,4 @@
-@import './_variables.scss';
+@import 'variables.scss';
 
 /*General styling stuff*/
 * {
@@ -105,70 +105,6 @@ span.subtle {
   padding: 0.5em 0;
 }
 
-/* sidebar component styles */
-$sidebar-bg: $denim;
-
-.sidebar {
-    top: 0;
-    bottom: 0;
-    position: absolute;
-    width: 300px;
-    background-color: $sidebar-bg;
-    color: $white;
-    right: 0;
-    padding: 1em;
-    z-index: 2000;
-}
-.sidebar .sidebar-menu {
-  clear:both;
-  display:block;
-  height: 2em;
-}
-.sidebar .sidebar-menu > * {
-  float:right;
-}
-
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-}
-.sidebar li {
-  cursor: pointer;
-  padding: 1em;
-
-}
-.sidebar li:hover {
-  background-color: darken($sidebar-bg, 5%);
-}
-.sidebar li.active {
-  background-color: lighten($sidebar-bg, 5%);
-}
-
-.sidebar .remove-board {
-  float: right;
-  opacity: 0.75;
-  cursor: pointer;
-}
-.sidebar .remove-board:hover {
-  opacity: 1.0;
-}
-
-.sidebar-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
-}
-.sidebar .about {
-  position: absolute;
-  bottom: 0;
-  font-size: 0.6em;
-  padding: 1em;
-  right: 0;
-}
-
 /*Component styles*/
 .empty-state {
     position: absolute;
@@ -186,120 +122,10 @@ $sidebar-bg: $denim;
   list-style: none;
   position:relative;
 }
-.note {
-  background-color: $white;
-  position: absolute;
-  border-radius: 3px;
-  border: none;
-  border-bottom: 1px solid $grey;
-  box-shadow: 0px 0px 5px $shadow;
-  transition: box-shadow 0.5s, transform 0.25s;
-  cursor: -webkit-grab;
-}
-.note div {
-  overflow: hidden;
-  height:100%;
-}
-.note.improvement {
-  background-color: $red;
-}
-.note.neutral {
-  background-color: $neutral-grey;
-}
-.note.positive {
-  background-color: $green;
-}
-
-.note.dragging {
-  box-shadow: 0px 0px 20px $shadow;
-  transform: scale(1.05);
-  cursor: -webkit-grabbing;
-}
-.note.active {
-  box-shadow: 0px 0px 20px $blue;
-}
-.note textarea {
-  width:100%;
-  height:100%;
-  border: none;
-  margin-top: 15px;
-  font-size:1em;
-  padding:5px;
-  background-color:transparent;
-}
-.note button.note-remove {
-  position:absolute;
-  top: 0;
-  right: 0;
-  border: none;
-  background-color: transparent;
-  font-size:1.5em;
-  cursor:pointer;
-  font-size: 1em;
-  box-shadow: none;
-}
-
-.note .note-votes {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    left: 5px;
-    height: 20px;
-}
-
-.note .note-vote {
-    width: 1em;
-    height: 1em;
-    border-radius: 100%;
-    background-color: $ocean;
-    display: inline-block;
-    margin-right: 0.5em;
-}
-
-.note .note-resize-handle {
-  position: absolute;
-  bottom: 0;
-  right:  0;
-  width:  20px;
-  height: 20px;
-  cursor: se-resize;
-  background-color: rgba(0,0,0,0.1);
-}
-
-
-
-.note .menu {
-  display:none;
-}
-.note.active .menu {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  position: absolute;
-  background-color: $neutral-grey;
-  border: 1px solid $grey;
-  bottom: -47px;
-  height: 47px;
-  padding: 0.5em;
-  border-radius: 2px;
-}
 
 /*
  * CSS transitions for components
 */
-/* always present */
-.slide-enter-active,
-.slide-leave-active {
-  transition: right .25s ease-out;
-}
-.slide-enter {
-  right: -300px;
-}
-.slide-leave-active{
-  right: -300px;
-}
-
-
 .flip-enter-active,
 .flip-leave-active {
   transition: transform 0.33s ease-out, opacity 0.5s ease-out;
@@ -307,7 +133,7 @@ $sidebar-bg: $denim;
 }
 
 .flip-enter,
-.flip-leave-active {
+.flip-leave-to, .flip-leave-active {
   opacity: 0;
   transform: translateY(10px);
 }

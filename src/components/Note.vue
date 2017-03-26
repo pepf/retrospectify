@@ -149,3 +149,104 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import './src/assets/styles/variables.scss';
+
+.note {
+  background-color: $white;
+  position: absolute;
+  border-radius: 3px;
+  border: none;
+  border-bottom: 1px solid $grey;
+  box-shadow: 0px 0px 5px $shadow;
+  transition: box-shadow 0.5s, transform 0.25s;
+  cursor: -webkit-grab;
+
+  div {
+    overflow: hidden;
+    height:100%;
+  }
+  &.improvement {
+    background-color: $red;
+  }
+  &.neutral {
+    background-color: $neutral-grey;
+  }
+  &.positive {
+    background-color: $green;
+  }
+  &.dragging {
+    box-shadow: 0px 0px 20px $shadow;
+    transform: scale(1.05);
+    cursor: -webkit-grabbing;
+  }
+  &.active {
+    box-shadow: 0px 0px 20px $blue;
+  }
+
+  textarea {
+    width:100%;
+    height:100%;
+    border: none;
+    margin-top: 15px;
+    font-size:1em;
+    padding:5px;
+    background-color:transparent;
+  }
+  button.note-remove {
+    position:absolute;
+    top: 0;
+    right: 0;
+    border: none;
+    background-color: transparent;
+    font-size:1.5em;
+    cursor:pointer;
+    font-size: 1em;
+    box-shadow: none;
+  }
+
+  .note-votes {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 5px;
+      height: 20px;
+  }
+
+  .note-vote {
+      width: 1em;
+      height: 1em;
+      border-radius: 100%;
+      background-color: $ocean;
+      display: inline-block;
+      margin-right: 0.5em;
+  }
+
+  .note-resize-handle {
+    position: absolute;
+    bottom: 0;
+    right:  0;
+    width:  20px;
+    height: 20px;
+    cursor: se-resize;
+    background-color: rgba(0,0,0,0.1);
+  }
+
+  .menu {
+    display:none;
+  }
+  &.active .menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    position: absolute;
+    background-color: $neutral-grey;
+    border: 1px solid $grey;
+    bottom: -47px;
+    height: 47px;
+    padding: 0.5em;
+    border-radius: 2px;
+  }
+}
+</style>
