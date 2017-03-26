@@ -1,8 +1,27 @@
-![retrospectify screenshot](http://www.pepf.nl/retrospective/img/screen.png "Rertrospectify screenshot")
+# vue-retrospective
 
-# retrospectify
-An awesome tool for doing retrospectives digitally. [demo](http://pepf.nl/retrospective/)
+> An awesome tool for doing team retrospectives digitally
 
-## How to run
-Just copy all files to your local disk and open in a modern browser, no external dependencies!
-Loading/Saving works using LocalStorage, so make sure the app has permission to read/write from localstorage.
+## Build Setup
+
+``` bash
+# install dependencies
+npm install
+
+# serve with hot reload at localhost:8080
+npm run dev
+
+# build for production with minification
+npm run build
+
+# build for production and view the bundle analyzer report
+npm run build --report
+
+# run unit tests
+npm run unit
+
+# run all tests
+npm test
+```
+
+For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

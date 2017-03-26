@@ -2,100 +2,10 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link href="css/style.css" rel="stylesheet" />
-    <title>Retrospectify</title>
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <title>vue-retrospective</title>
   </head>
   <body>
-    <div id="app" @click.stop="resetActive">
-      <saved-boards :boards="boards" :active-board-index="activeBoardIndex"></saved-boards>
-      <div class="board-content">
-        <div class="main_menu">
-          <span class="heading">Retrospectify<sup>™</sup></span>
-          <div class="note_actions">
-            <button class="positive" v-on:click="addNote('positive')">Positive note</button>
-            <button class="neutral" v-on:click="addNote('neutral')">Neutral note</button>
-            <button class="negative" v-on:click="addNote('improvement')">Improvement note</button>
-          </div>
-          <div class="board_actions">
-            <span class="subtle" :class="{'hidden':!unsavedChanges}">There are unsaved changes</span>
-            <button v-on:click="saveBoards" :disabled="!unsavedChanges">Save</button>
-            <button class="menu-toggle invert" @click.stop="toggleSidebar">☰</span>
-          </div>
-        </div>
-        <p>
-          <input class="board-title" v-model="activeBoard.title" />
-        </p>
-        <div class="notes">
-          <div class="empty-state" v-show="!activeBoard.notes.length">this is a very empty screen</div>
-          <transition-group name="flip" tag="div">
-            <custom-note v-for="note in activeBoard.notes" :key="note.id" :content="note.text"
-              :type="note.note_type" :position="note.position" :id="note.id" :note-size="note.noteSize"
-              :font-size="note.fontSize" :votes="note.votes" :order="note.order" :active="note.id == activeDrag" @update="updateNote"
-              @stop-drag="stopDrag" @start-drag="startDrag">
-              </custom-note>
-            </transition-group>
-        </div>
-      </div>
-    </div>
-
-    <!-- The template for the note object -->
-    <script type="text/x-template" id="custom-note-template">
-      <div class="note" v-bind:class="nClass" v-bind:style="cStyle" v-draggable="onPositionMouseMove"
-        @click.stop="" @keyup.46="removeNote">
-        <div>
-          <textarea v-model="stateContent" v-bind:style="{ fontSize: fontSize + 'em' }"></textarea>
-          <button @click="removeNote" class="note-remove">✕</button>
-          <div class="note-votes" v-show="votes > 0">
-            <transition-group name="flip" tag="span">
-              <span class="note-vote" v-for="n in votes" transition="flip" :key="n"></span>
-            </transition-group>
-          </div>
-          <div v-show="nClass.active" class="note-resize-handle" v-draggable="onSizeMouseMove"></div>
-        </div>
-        <!-- Note sub-menu, only shown when a note is in "edit state" -->
-        <div class="menu">
-          <button @click.stop="incrFontSize">A+</button>
-          <button @click.stop="decFontSize">A-</button>
-          <button class="positive" @click.stop="addVote">+</button>
-          <button class="negative" @click.stop="removeVote" :disabled="votes<=0">-</button>
-          <span>{{votes}}</span>
-        </div>
-      </div>
-    </script>
-
-    <!-- The template for the saved-boards sidebar component -->
-    <script type="text/x-template" id="saved-boards">
-      <div class="sidebar-component">
-        <transition name="slide">
-          <div class="sidebar" v-show="expanded">
-            <p class="sidebar-menu">
-              <button class="invert" v-on:click="saveBoards">Save</button>
-              <button class="invert small" v-on:click="clearBoard">Clear the board</button>
-            </p>
-            <h2>Saved boards</h2>
-            <ul>
-              <li v-for="(board, index) in boards" @click="loadBoard(index)" v-bind:class="{ 'active' : (activeBoardIndex == index)}">
-                {{ board.title }}
-                <span class="remove-board" title="remove" @click="removeBoard(index)" v-show="boards.length > 1">✕</span>
-              </li>
-            </ul>
-            <button @click="createBoard">+ New</button>
-            <div class="about">
-              Retrospectify V{{ version }}
-            </div>
-          </div>
-        </transition>
-        <div class="sidebar-overlay" @click="toggle" v-show="expanded"></div>
-      </div>
-    </script>
-
-    <!-- All other js files -->
-    <script src="js/lib/vue.js"></script>
-    <script>var bus = new Vue();</script>
-    <script src="js/directive.js"></script>
-    <script src="js/note.js"></script>
-    <script src="js/board.js"></script>
-    <script src="js/app.js"></script>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
   </body>
 </html>
