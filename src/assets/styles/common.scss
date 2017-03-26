@@ -1,3 +1,5 @@
+@import './_variables.scss';
+
 /*General styling stuff*/
 * {
   box-sizing: border-box;
@@ -5,7 +7,7 @@
 
 body, html {
   font-family: sans-serif;
-  background-color: #ECF0F1;
+  background-color: $light-grey;
   font-size: 14px;
 }
 
@@ -29,10 +31,10 @@ textarea, input {
 
 button {
   position:relative;
-  background-color: #ABB7B7;
+  background-color: $medium-grey;
   border: none;
   border-radius: 2px;
-  box-shadow: 0px 1px #B2B2B2;
+  box-shadow: 0px 1px $shadow;
   padding: 0.5em;
   cursor: pointer;
   font-size: 1em;
@@ -44,26 +46,26 @@ button[disabled] {
 }
 
 button:hover {
-  background-color: #C3CFCF;
+  background-color: lighten($medium-grey, 10%);
 }
 button:active {
   top: 1px;
   box-shadow: none;
-  background-color: #919C9C;
+  background-color: darken($medium-grey, 10%);
 }
 
-button.positive    { border-left: 10px solid #CAF8C7; }
-button.neutral     { border-left: 10px solid #ECECEC; }
-button.negative    { border-left: 10px solid #F0C4A4; }
+button.positive    { border-left: 10px solid $green; }
+button.neutral     { border-left: 10px solid $neutral-grey; }
+button.negative    { border-left: 10px solid $red; }
 
 button.invert {
   border: 1px solid rgba(255, 255, 255, 0.5);
-  color: #ABB7B7;
+  color: $medium-grey;
   background-color: transparent;
   box-shadow: none;
 }
 button.invert:hover {
-  color: white;
+  color: $white;
 }
 
 button.invert.small {
@@ -78,13 +80,13 @@ button + button {
 
 /*Heading styles*/
 span.heading {
-  color: #788181;
+  color: $dark-grey;
   font-size: 1.5em;
   vertical-align: initial;
   margin-right: 1em;
 }
 span.subtle {
-  color: #ABB7B7;
+  color: $medium-grey;
 }
 
 .main_menu {
@@ -94,23 +96,25 @@ span.subtle {
 }
 
 .board-title {
-  color: #788181;
+  color: $dark-grey;
   border: none;
   background-color: rgba(0, 0, 0, 0);
   font-size: 1em;
   width: 250px;
-  border-bottom: 1px solid #788181;
+  border-bottom: 1px solid $dark-grey;
   padding: 0.5em 0;
 }
 
 /* sidebar component styles */
+$sidebar-bg: $denim;
+
 .sidebar {
     top: 0;
     bottom: 0;
     position: absolute;
     width: 300px;
-    background-color: #6C7A89;
-    color: #FFF;
+    background-color: $sidebar-bg;
+    color: $white;
     right: 0;
     padding: 1em;
     z-index: 2000;
@@ -134,10 +138,10 @@ span.subtle {
 
 }
 .sidebar li:hover {
-  background-color: #656E79;
+  background-color: darken($sidebar-bg, 5%);
 }
 .sidebar li.active {
-  background-color: #8E9FB3;
+  background-color: lighten($sidebar-bg, 5%);
 }
 
 .sidebar .remove-board {
@@ -173,7 +177,7 @@ span.subtle {
     font-size: 3em;
     text-align: center;
     right: 0;
-    color: #ABB7B7;
+    color: $medium-grey;
     opacity: 0.5;
     user-select: none;
 }
@@ -183,12 +187,12 @@ span.subtle {
   position:relative;
 }
 .note {
-  background-color: #FFF;
+  background-color: $white;
   position: absolute;
   border-radius: 3px;
   border: none;
-  border-bottom: 1px solid #C1C1C1;
-  box-shadow: 0px 0px 5px rgba(112, 112, 112, 0.45);
+  border-bottom: 1px solid $grey;
+  box-shadow: 0px 0px 5px $shadow;
   transition: box-shadow 0.5s, transform 0.25s;
   cursor: -webkit-grab;
 }
@@ -197,22 +201,22 @@ span.subtle {
   height:100%;
 }
 .note.improvement {
-  background-color: #F0C4A4;
+  background-color: $red;
 }
 .note.neutral {
-  background-color: #ECECEC;
+  background-color: $neutral-grey;
 }
 .note.positive {
-  background-color: #CAF8C7
+  background-color: $green;
 }
 
 .note.dragging {
-  box-shadow: 0px 0px 20px rgba(112, 112, 112, 0.45);
+  box-shadow: 0px 0px 20px $shadow;
   transform: scale(1.05);
   cursor: -webkit-grabbing;
 }
 .note.active {
-  box-shadow: 0px 0px 20px #8ACBD3;
+  box-shadow: 0px 0px 20px $blue;
 }
 .note textarea {
   width:100%;
@@ -247,7 +251,7 @@ span.subtle {
     width: 1em;
     height: 1em;
     border-radius: 100%;
-    background-color: #5C97BF;;
+    background-color: $ocean;
     display: inline-block;
     margin-right: 0.5em;
 }
@@ -272,8 +276,8 @@ span.subtle {
   align-items: center;
   justify-content: space-around;
   position: absolute;
-  background-color: #ECECEC;
-  border: 1px solid #CCC;
+  background-color: $neutral-grey;
+  border: 1px solid $grey;
   bottom: -47px;
   height: 47px;
   padding: 0.5em;
@@ -337,7 +341,7 @@ span.subtle {
      margin: 0.5em 0;
    }
    .note.active {
-     border: 1px solid #8ACBD3;
+     border: 1px solid $blue;
    }
    .note .note-votes {
      position: static;
