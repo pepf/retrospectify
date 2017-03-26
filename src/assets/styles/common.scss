@@ -1,0 +1,191 @@
+@import 'variables.scss';
+
+/*General styling stuff*/
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  font-family: sans-serif;
+  background-color: $light-grey;
+  font-size: 14px;
+}
+
+textarea, input {
+  outline: none;
+  font-family: sans-serif;
+}
+
+/**
+ * Utility class
+ */
+.hidden {
+  visibility: hidden;
+}
+
+#app {
+  position:absolute;
+  top: 0; right:0; bottom: 0; left: 0;
+  padding: 1em;
+}
+
+button {
+  position:relative;
+  background-color: $medium-grey;
+  border: none;
+  border-radius: 2px;
+  box-shadow: 0px 1px $shadow;
+  padding: 0.5em;
+  cursor: pointer;
+  font-size: 1em;
+  outline:none;
+  transition: background-color 0.2s;
+}
+button[disabled] {
+  opacity:0.5;
+}
+
+button:hover {
+  background-color: lighten($medium-grey, 10%);
+}
+button:active {
+  top: 1px;
+  box-shadow: none;
+  background-color: darken($medium-grey, 10%);
+}
+
+button.positive    { border-left: 10px solid $green; }
+button.neutral     { border-left: 10px solid $neutral-grey; }
+button.negative    { border-left: 10px solid $red; }
+
+button.invert {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: $medium-grey;
+  background-color: transparent;
+  box-shadow: none;
+}
+button.invert:hover {
+  color: $white;
+}
+
+button.invert.small {
+    border: none;
+    font-size: 0.8em;
+    line-height: 19px;
+}
+
+button + button {
+  margin: 0 0.5em;
+}
+
+/*Heading styles*/
+span.heading {
+  color: $dark-grey;
+  font-size: 1.5em;
+  vertical-align: initial;
+  margin-right: 1em;
+}
+span.subtle {
+  color: $medium-grey;
+}
+
+.main_menu {
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.board-title {
+  color: $dark-grey;
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  font-size: 1em;
+  width: 250px;
+  border-bottom: 1px solid $dark-grey;
+  padding: 0.5em 0;
+}
+
+/*Component styles*/
+.empty-state {
+    position: absolute;
+    left: 0;
+    top: 330px;
+    font-size: 3em;
+    text-align: center;
+    right: 0;
+    color: $medium-grey;
+    opacity: 0.5;
+    user-select: none;
+}
+
+.notes {
+  list-style: none;
+  position:relative;
+}
+
+/*
+ * CSS transitions for components
+*/
+.flip-enter-active,
+.flip-leave-active {
+  transition: transform 0.33s ease-out, opacity 0.5s ease-out;
+  transform: translateY(0);
+}
+
+.flip-enter,
+.flip-leave-to, .flip-leave-active {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+
+/**
+ * Responsive styles
+ *
+ * @NOTE Yes the design is desktop first, so I'm going
+ * to use max-width to bundle all exceptions here for now
+ */
+ @media screen and (max-width: 768px) {
+   button {
+     padding:0.75em;
+   }
+   .main_menu {
+     display: block;
+   }
+   .heading {
+     display:block;
+     margin-bottom: 1em 0;
+   }
+   .note_actions {
+     display: flex;
+     margin: 1em 0;
+   }
+   .note {
+     position: static;
+     height: auto !important;
+     width: 100% !important;
+     margin: 0.5em 0;
+   }
+   .note.active {
+     border: 1px solid $blue;
+   }
+   .note .note-votes {
+     position: static;
+     margin: 0.5em;
+   }
+   .note button.note-remove {
+     display: none;
+   }
+   .note:last-child {
+     margin-bottom: 3em;
+   }
+   .note textarea {
+     resize: none;
+   }
+   .note.active .menu {
+     position: fixed;
+     left:0;
+     right: 0;
+     bottom: 0;
+   }
+ }
