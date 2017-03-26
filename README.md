@@ -1,4 +1,4 @@
-![retrospectify screenshot](http://www.pepf.nl/retrospective/img/screen.png "Rertrospectify screenshot")
+![retrospectify screenshot](http://blog.pepf.nl/wp-content/uploads/2016/09/retrospectify.gif "Rertrospectify screenshot")
 
 # retrospectify
 An awesome tool for doing retrospectives digitally. [demo](http://pepf.nl/retrospective/)
