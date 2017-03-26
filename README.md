@@ -20,9 +20,16 @@ This can be useful when doing retrospectives with remote teams or when you want 
 ## Usage
 
 ### I just want to use the app!
-Just copy the files from the ``dist/`` folder to your local disk and open ``index.html`` in a modern browser. That's all to it!
+The quickest way is to use the live demo!
+Other than that, you can clone this repository, and from the root run:
+``` bash
+npm install
+npm run build
+```
 
-Loading/Saving works using LocalStorage, so make sure the app has permission to read/write from localstorage.
+This will create a ```dist``` directory. Put the contents of that directory on a server and you're all set!
+
+_Loading/Saving works using LocalStorage, so make sure the app has permission to read/write from LocalStorage._
 
 ### I want to build it myself from the source or contribute to the code
 Then follow these instructions, depending on what you want to do
