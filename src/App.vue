@@ -35,6 +35,7 @@
 <script>
 import Note from './components/Note'
 import SavedBoards from './components/SavedBoards'
+import BoardExport from './boardexport'
 import bus from './bus.js'
 
 export default {
@@ -79,7 +80,7 @@ export default {
       self.activeBoardIndex = id
     })
 
-    bus.$on('create-board', function (id) {
+    bus.$on('create-board', function () {
       self.boards.push(self.createBoard())
       self.activeBoardIndex = self.boards.length - 1
     })
@@ -96,6 +97,10 @@ export default {
 
     bus.$on('save-boards', function () {
       self.saveState()
+    })
+    bus.$on('export-board', () => {
+      const board = new BoardExport(this.activeBoard)
+      board.save()
     })
   },
 

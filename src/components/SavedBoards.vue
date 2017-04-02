@@ -4,6 +4,7 @@
       <div class="sidebar" v-show="expanded">
         <p class="sidebar-menu">
           <button class="invert" v-on:click="saveBoards">Save</button>
+          <button class="invert" v-on:click="exportBoard(activeBoardIndex)">Export</button>
           <button class="invert small" v-on:click="clearBoard">Clear the board</button>
         </p>
         <h2>Saved boards</h2>
@@ -49,8 +50,8 @@ export default {
     loadBoard: function (id) {
       bus.$emit('load-board', id)
     },
-    createBoard: function (id) {
-      bus.$emit('create-board', id)
+    createBoard: function () {
+      bus.$emit('create-board')
     },
     removeBoard: function (id) {
       bus.$emit('remove-board', id)
@@ -60,6 +61,10 @@ export default {
     },
     saveBoards: function () {
       bus.$emit('save-boards')
+    },
+    exportBoard (id) {
+      console.log(id)
+      bus.$emit('export-board', id)
     },
     toggle: function () {
       this.expanded = !this.expanded
