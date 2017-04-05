@@ -37,6 +37,7 @@ import Note from './components/Note'
 import SavedBoards from './components/SavedBoards'
 import BoardExport from './boardexport'
 import bus from './bus.js'
+import moment from 'moment'
 
 export default {
   name: 'app',
@@ -50,18 +51,11 @@ export default {
     activeDrag: null,
     unsavedChanges: false,
 
-    boards: [ {
-      title: 'My retrospective for <date>',
-      notes: [],
-      initial: true
-    } ]
+    boards: []
   }),
 
   computed: {
     activeBoard: function () {
-      if (!Array.isArray(this.boards)) {
-        return this.createBoard()
-      }
       return this.boards[this.activeBoardIndex]
     }
   },
@@ -81,7 +75,7 @@ export default {
     })
 
     bus.$on('create-board', function () {
-      self.boards.push(self.createBoard())
+      self.boards.push(self.createBoard(false))
       self.activeBoardIndex = self.boards.length - 1
     })
 
@@ -144,6 +138,11 @@ export default {
       this.activeBoard.notes.push(note)
     },
 
+    boardTitle () {
+      let today = moment().format('LL')
+      return `My retrospective for ${today}`
+    },
+
     getNoteById: function (id) {
       return this.activeBoard.notes.find(function (note) {
         return id === note.id
@@ -193,13 +192,15 @@ export default {
       bus.$emit('save-boards')
     },
 
-    createBoard: function () {
+    createBoard (initial) {
       var board = {
-        title: 'New board',
-        notes: []
+        title: this.boardTitle(),
+        notes: [],
+        initial: initial
       }
       return board
     },
+
     resetActive: function () {
       this.activeDrag = null
     },
@@ -265,7 +266,7 @@ export default {
     'boards': {
       handler: function (newVal, oldVal) {
         // check if we're loading the app for the first time
-        if (!oldVal[0].initial) {
+        if (oldVal[0] && !oldVal[0].initial) {
           this.unsavedChanges = true
         }
       },
@@ -275,6 +276,9 @@ export default {
 
   created: function () {
     this.loadState()
+    if (this.boards.length === 0) {
+      this.boards.push(this.createBoard(true))
+    }
   }
 }
 </script>
