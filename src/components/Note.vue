@@ -57,21 +57,21 @@ export default {
   },
 
   computed: {
-    cStyle: function () {
+    cStyle () {
       var style = {}
       if (this.position) {
-        style.left = this.position.x + 'px'
-        style.top = this.position.y + 'px'
+        style.left = `${this.position.x}px`
+        style.top = `${this.position.y}px`
       }
       if (this.noteSize) {
-        style.width = this.noteSize.w + 'px'
-        style.height = this.noteSize.h + 'px'
+        style.width = `${this.noteSize.w}px`
+        style.height = `${this.noteSize.h}px`
       }
       style.zIndex = this.order
 
       return style
     },
-    nClass: function () {
+    nClass () {
       var output = {}
       output.active = this.active
       output.dragging = this.dragging
@@ -81,29 +81,29 @@ export default {
   },
 
   methods: {
-    removeNote: function () {
+    removeNote () {
       bus.$emit('remove-note', this.id)
     },
-    incrFontSize: function (e) {
+    incrFontSize (e) {
       var step = 0.5
       var max = 2.5
       var newFontSize = (this.fontSize + step <= max) ? this.fontSize + step : max
       this.$emit('update', this.id, { fontSize: newFontSize })
     },
-    decFontSize: function (e) {
+    decFontSize (e) {
       var step = 0.5
       var min = 0.5
       var newFontSize = (this.fontSize - step >= min) ? this.fontSize - step : min
       this.$emit('update', this.id, { fontSize: newFontSize })
     },
-    addVote: function (e) {
+    addVote (e) {
       this.$emit('update', this.id, {votes: this.votes + 1})
     },
-    removeVote: function (e) {
+    removeVote (e) {
       this.$emit('update', this.id, {votes: this.votes - 1})
     },
 
-    onPositionMouseMove: function (d) {
+    onPositionMouseMove (d) {
       if (Math.abs(d.dx) > 0 || Math.abs(d.dy) > 0) {
         this.dragging = true
       } else {
@@ -118,16 +118,16 @@ export default {
       this.$emit('update', this.id, { position: position })
     },
 
-    onPositionMouseMoveStart: function () {
+    onPositionMouseMoveStart () {
       this.$emit('start-drag', this.id)
     },
 
-    onPositionMouseMoveStop: function () {
+    onPositionMouseMoveStop () {
       this.dragging = false
       this.$emit('stop-drag', this.id)
     },
 
-    onSizeMouseMove: function (d) {
+    onSizeMouseMove (d) {
       var newW = this.noteSize.w + d.dx
       var newH = this.noteSize.h + d.dy
 
@@ -141,7 +141,7 @@ export default {
 
   watch: {
     /** listen to input field with content, emit event when changed **/
-    stateContent: function (newText, oldText) {
+    stateContent (newText, oldText) {
       if (newText !== oldText) {
         this.$emit('update', this.id, {text: newText})
       }

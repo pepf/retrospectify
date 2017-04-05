@@ -40,33 +40,32 @@ export default {
 
   template: '#saved-boards',
 
-  created: function () {
+  created () {
     var self = this
     bus.$on('toggle-sidebar', function (e) {
       self.toggle()
     })
   },
   methods: {
-    loadBoard: function (id) {
+    loadBoard (id) {
       bus.$emit('load-board', id)
     },
-    createBoard: function () {
+    createBoard () {
       bus.$emit('create-board')
     },
-    removeBoard: function (id) {
+    removeBoard (id) {
       bus.$emit('remove-board', id)
     },
-    clearBoard: function () {
+    clearBoard () {
       bus.$emit('clear-board')
     },
-    saveBoards: function () {
+    saveBoards () {
       bus.$emit('save-boards')
     },
     exportBoard (id) {
-      console.log(id)
       bus.$emit('export-board', id)
     },
-    toggle: function () {
+    toggle () {
       this.expanded = !this.expanded
     }
   }
