@@ -3,8 +3,8 @@
     <transition name="slide">
       <div class="sidebar" v-show="expanded">
         <p class="sidebar-menu">
-          <button class="invert" v-on:click="saveBoards">Save</button>
-          <button class="invert" v-on:click="exportBoard(activeBoardIndex)">Export</button>
+          <button class="invert" v-on:click="saveBoards" title="Save board for later editing">Save</button>
+          <button class="invert" v-on:click="exportBoard(activeBoardIndex)" title="Export board contents to file">Export</button>
           <button class="invert small" v-on:click="clearBoard">Clear the board</button>
         </p>
         <h2>Saved boards</h2>

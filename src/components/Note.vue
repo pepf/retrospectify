@@ -249,4 +249,41 @@ export default {
     border-radius: 2px;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .note {
+    position: static;
+    height: auto !important;
+    width: 100% !important;
+    margin: 0.5em 0;
+
+    .note-votes {
+      position: static;
+      margin: 0.5em;
+    }
+    button.note-remove {
+      display: none;
+    }
+    &:last-child {
+      margin-bottom: 3em;
+    }
+    textarea {
+      resize: none;
+    }
+
+    &.active {
+      border: 1px solid $blue;
+      .menu {
+        position: fixed;
+        left:0;
+        right: 0;
+        bottom: 0;
+      }
+    }
+  }
+
+}
+
+
+
 </style>
