@@ -35,7 +35,9 @@
 <script>
 import Note from './components/Note'
 import SavedBoards from './components/SavedBoards'
+import BoardExport from './boardexport'
 import bus from './bus.js'
+import moment from 'moment'
 
 export default {
   name: 'app',
@@ -44,28 +46,23 @@ export default {
     Note
   },
 
-  data: () => ({
-    activeBoardIndex: 0,
-    activeDrag: null,
-    unsavedChanges: false,
+  data: function () {
+    return {
+      activeBoardIndex: 0,
+      activeDrag: null,
+      unsavedChanges: false,
 
-    boards: [ {
-      title: 'My retrospective for <date>',
-      notes: [],
-      initial: true
-    } ]
-  }),
+      boards: []
+    }
+  },
 
   computed: {
-    activeBoard: function () {
-      if (!Array.isArray(this.boards)) {
-        return this.createBoard()
-      }
+    activeBoard () {
       return this.boards[this.activeBoardIndex]
     }
   },
 
-  beforeMount: function () {
+  beforeMount () {
     var self = this
 
     bus.$on('remove-note', function (id) {
@@ -79,14 +76,15 @@ export default {
       self.activeBoardIndex = id
     })
 
-    bus.$on('create-board', function (id) {
-      self.boards.push(self.createBoard())
+    bus.$on('create-board', function () {
+      self.boards.push(self.createBoard(false))
       self.activeBoardIndex = self.boards.length - 1
     })
 
     bus.$on('remove-board', function (id) {
       self.boards.splice(id, 1)
       // Set active board to one less than the removed one
+      console.log(id - 1)
       self.activeBoardIndex = id - 1
     })
 
@@ -97,10 +95,14 @@ export default {
     bus.$on('save-boards', function () {
       self.saveState()
     })
+    bus.$on('export-board', () => {
+      const board = new BoardExport(this.activeBoard)
+      board.save()
+    })
   },
 
   methods: {
-    addNote: function (type) {
+    addNote (type) {
       var placeholderText
       var terciary
       switch (type) {
@@ -139,13 +141,18 @@ export default {
       this.activeBoard.notes.push(note)
     },
 
-    getNoteById: function (id) {
+    boardTitle () {
+      let today = moment().format('LL')
+      return `My retrospective for ${today}`
+    },
+
+    getNoteById (id) {
       return this.activeBoard.notes.find(function (note) {
         return id === note.id
       })
     },
 
-    updateNote: function (id, update) {
+    updateNote (id, update) {
       var note = this.getNoteById(id)
       if (note) {
         // The whole board is not "initial" anymore
@@ -159,14 +166,14 @@ export default {
       return note
     },
 
-    getMaxOrder: function () {
+    getMaxOrder () {
       return this.activeBoard.notes.reduce(function (prev, value) {
         if (typeof value.order === 'undefined') { return prev }
         return (prev > value.order ? prev : value.order)
       }, 0)
     },
 
-    startDrag: function (id) {
+    startDrag (id) {
       var maxOrder = this.getMaxOrder()
       var note = this.getNoteById(id)
 
@@ -180,30 +187,32 @@ export default {
         this.updateNote(id, {order: maxOrder + 1})
       }
     },
-    stopDrag: function (id) {
+    stopDrag (id) {
       this.updateNote(id, {active: false})
     },
 
-    saveBoards: function () {
+    saveBoards () {
       bus.$emit('save-boards')
     },
 
-    createBoard: function () {
+    createBoard (initial) {
       var board = {
-        title: 'New board',
-        notes: []
+        title: this.boardTitle(),
+        notes: [],
+        initial: initial
       }
       return board
     },
-    resetActive: function () {
+
+    resetActive () {
       this.activeDrag = null
     },
-    toggleSidebar: function () {
+    toggleSidebar () {
       bus.$emit('toggle-sidebar')
     },
 
     // Loads recent config from localstorage
-    loadState: function () {
+    loadState () {
       var storage = window.localStorage
 
       // Check if there is saved content available
@@ -218,14 +227,14 @@ export default {
     },
 
     // Saves current config to localstorage
-    saveState: function () {
+    saveState () {
       var storage = window.localStorage
       var content = JSON.stringify(this.boards)
       storage.setItem('retrospective-board', content)
       this.unsavedChanges = false
     },
 
-    migrateState: function () {
+    migrateState () {
       var storage = window.localStorage
 
       var i = 0
@@ -260,7 +269,7 @@ export default {
     'boards': {
       handler: function (newVal, oldVal) {
         // check if we're loading the app for the first time
-        if (!oldVal[0].initial) {
+        if (oldVal[0] && !oldVal[0].initial) {
           this.unsavedChanges = true
         }
       },
@@ -268,8 +277,11 @@ export default {
     }
   },
 
-  created: function () {
+  created () {
     this.loadState()
+    if (this.boards.length === 0) {
+      this.boards.push(this.createBoard(true))
+    }
   }
 }
 </script>

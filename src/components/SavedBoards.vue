@@ -3,7 +3,8 @@
     <transition name="slide">
       <div class="sidebar" v-show="expanded">
         <p class="sidebar-menu">
-          <button class="invert" v-on:click="saveBoards">Save</button>
+          <button class="invert" v-on:click="saveBoards" title="Save board for later editing">Save</button>
+          <button class="invert" v-on:click="exportBoard(activeBoardIndex)" title="Export board contents to file">Export</button>
           <button class="invert small" v-on:click="clearBoard">Clear the board</button>
         </p>
         <h2>Saved boards</h2>
@@ -39,29 +40,32 @@ export default {
 
   template: '#saved-boards',
 
-  created: function () {
+  created () {
     var self = this
     bus.$on('toggle-sidebar', function (e) {
       self.toggle()
     })
   },
   methods: {
-    loadBoard: function (id) {
+    loadBoard (id) {
       bus.$emit('load-board', id)
     },
-    createBoard: function (id) {
-      bus.$emit('create-board', id)
+    createBoard () {
+      bus.$emit('create-board')
     },
-    removeBoard: function (id) {
+    removeBoard (id) {
       bus.$emit('remove-board', id)
     },
-    clearBoard: function () {
+    clearBoard () {
       bus.$emit('clear-board')
     },
-    saveBoards: function () {
+    saveBoards () {
       bus.$emit('save-boards')
     },
-    toggle: function () {
+    exportBoard (id) {
+      bus.$emit('export-board', id)
+    },
+    toggle () {
       this.expanded = !this.expanded
     }
   }

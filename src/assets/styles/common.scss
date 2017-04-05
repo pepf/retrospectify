@@ -160,32 +160,5 @@ span.subtle {
      display: flex;
      margin: 1em 0;
    }
-   .note {
-     position: static;
-     height: auto !important;
-     width: 100% !important;
-     margin: 0.5em 0;
-   }
-   .note.active {
-     border: 1px solid $blue;
-   }
-   .note .note-votes {
-     position: static;
-     margin: 0.5em;
-   }
-   .note button.note-remove {
-     display: none;
-   }
-   .note:last-child {
-     margin-bottom: 3em;
-   }
-   .note textarea {
-     resize: none;
-   }
-   .note.active .menu {
-     position: fixed;
-     left:0;
-     right: 0;
-     bottom: 0;
-   }
+
  }
