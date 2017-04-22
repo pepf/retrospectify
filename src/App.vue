@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" @click.stop="resetActive">
     <saved-boards :boards="boards" :active-board-index="activeBoardIndex"></saved-boards>
     <div class="board-content">
       <div class="main_menu">
@@ -202,9 +202,11 @@ export default {
       return board
     },
 
+    // Deactivate any selected note
     resetActive () {
       this.activeDrag = null
     },
+
     toggleSidebar () {
       bus.$emit('toggle-sidebar')
     },
