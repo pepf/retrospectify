@@ -20,13 +20,11 @@
       </p>
       <div class="notes">
         <div class="empty-state" v-show="!activeBoard.notes.length">this is a very empty screen</div>
-        <transition-group name="flip" tag="div">
-          <note v-for="note in activeBoard.notes" :key="note.id" :content="note.text"
-            :type="note.note_type" :position="note.position" :id="note.id" :note-size="note.noteSize"
-            :font-size="note.fontSize" :votes="note.votes" :order="note.order" :active="note.id == activeDrag" @update="updateNote"
-            @stop-drag="stopDrag" @start-drag="startDrag">
-            </note>
-          </transition-group>
+        <note v-for="note in activeBoard.notes" :key="note.id" :content="note.text"
+          :type="note.note_type" :position="note.position" :id="note.id" :note-size="note.noteSize"
+          :font-size="note.fontSize" :votes="note.votes" :order="note.order" :active="note.id == activeDrag" @update="updateNote"
+          @stop-drag="stopDrag" @start-drag="startDrag">
+          </note>
       </div>
     </div>
   </div>

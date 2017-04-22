@@ -2,6 +2,7 @@
  * Note component, for each individual note in a board
  */
 <template>
+  <transition name="flip" appear>
   <div class="note" v-bind:class="nClass" v-bind:style="cStyle" v-draggable="onPositionMouseMove"
     @click.stop="" @keyup.46="removeNote">
     <div>
@@ -23,6 +24,7 @@
       <span>{{votes}}</span>
     </div>
   </div>
+  </transition>
 </template>
 
 <script>
@@ -30,8 +32,7 @@ import bus from '../bus.js'
 
 export default {
   name: 'custom-note',
-  // All props that will be synced to our main app state via two-way binding
-  // A.k.a the most important data fields per note
+
   props: {
     'id': {type: Number, required: true},
     'active': {type: Boolean, default: false},
@@ -108,6 +109,7 @@ export default {
         this.dragging = true
       } else {
         this.dragging = false
+        return
       }
 
       let newX, newY, position
