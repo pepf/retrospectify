@@ -1,6 +1,6 @@
 {
   "name": "retrospectify",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An awesome tool for doing team retrospectives digitally",
   "author": "(Pepijn Fens <pepijnfens@gmail.com>)",
   "private": true,
