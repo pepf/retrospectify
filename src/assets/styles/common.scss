@@ -78,6 +78,13 @@ button + button {
   margin: 0 0.5em;
 }
 
+.beta {
+  font-weight: bold;
+  background-color: #8ACBD3;
+  color: #fff;
+  padding: 3px;
+}
+
 /*Heading styles*/
 span.heading {
   color: $dark-grey;

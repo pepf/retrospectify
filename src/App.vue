@@ -5,9 +5,13 @@
       <div class="main_menu">
         <span class="heading">Retrospectify<sup>™</sup></span>
         <div class="note_actions">
-          <button class="positive" v-on:click="addNote('positive')">Positive note</button>
-          <button class="neutral" v-on:click="addNote('neutral')">Neutral note</button>
-          <button class="negative" v-on:click="addNote('improvement')">Improvement note</button>
+          <button class="positive" @click="addNote('positive')">Positive note</button>
+          <button class="neutral" @click="addNote('neutral')">Neutral note</button>
+          <button class="negative" @click="addNote('improvement')">Improvement note</button>
+
+          <button @click="reArrange()" title="Rearranges the notes by amount of votes and make them fit the current window">
+            Re-arrange <sup class="beta">BETA</sup>
+          </button>
         </div>
         <div class="board_actions">
           <span class="subtle" :class="{'hidden':!unsavedChanges}">There are unsaved changes</span>
@@ -34,6 +38,7 @@
 import Note from './components/Note'
 import SavedBoards from './components/SavedBoards'
 import BoardExport from './boardexport'
+import Positioner from './positioner'
 import bus from './bus.js'
 import moment from 'moment'
 
@@ -62,6 +67,7 @@ export default {
 
   beforeMount () {
     var self = this
+    this.positioner = new Positioner()
 
     bus.$on('remove-note', function (id) {
       var noteIndex = self.activeBoard.notes.findIndex(function (note) {
@@ -100,6 +106,11 @@ export default {
   },
 
   methods: {
+    reArrange () {
+      this.positioner.setState(this.activeBoard.notes)
+      this.positioner.reArrange()
+    },
+
     addNote (type) {
       var placeholderText
       var terciary
@@ -118,17 +129,11 @@ export default {
           break
       }
 
-      var appWidth = this.$el.offsetWidth
-      var typePosition = ((appWidth / 3) * terciary)
-
-      var x = Math.floor((Math.random() * 20) - 10) + typePosition
-      var y = Math.floor((Math.random() * 20) - 10)
-
       // Note default props
       var note = {
         text: placeholderText,
         note_type: type,
-        position: {x: x, y: y},
+        position: this.positioner.getPositionforNew(terciary),
         noteSize: {w: 200, h: 150},
         fontSize: 1,
         votes: 0,
