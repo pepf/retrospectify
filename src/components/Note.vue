@@ -213,7 +213,7 @@ export default {
       bottom: 0;
       right: 0;
       left: 5px;
-      height: 20px;
+      height: auto;
   }
 
   .note-vote {
