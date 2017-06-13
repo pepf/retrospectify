@@ -54,7 +54,6 @@ export default {
       activeBoardIndex: 0,
       activeDrag: null,
       unsavedChanges: false,
-
       boards: []
     }
   },
@@ -279,6 +278,9 @@ export default {
         }
       },
       deep: true // watch EVERYTHING
+    },
+    'activeBoard.notes': function (notes) {
+      this.positioner.setGrid(notes)
     }
   },
 
