@@ -51,7 +51,7 @@ class Positioner {
       let size = note.noteSize
 
       // Figure out how much notes would fit per category, based on current window width
-      const rowWidth = Math.floor((window.innerWidth / 3) / size.w) // 3 notes per row
+      const rowWidth = Math.floor((window.innerWidth / grid.columns.length) / size.w) // 3 notes per row
 
       const columnWidth = (1 / grid.columns.length) * window.innerWidth
       const columnOffset = column * columnWidth
