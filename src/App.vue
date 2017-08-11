@@ -20,7 +20,7 @@
         </div>
       </div>
 
-      <board ref="board" :board="activeBoard" />
+      <board ref="board" :board="activeBoard" v-if="activeBoard" />
     </div>
   </div>
 </template>
@@ -49,7 +49,7 @@ export default {
 
   computed: {
     activeBoard () {
-      return this.boards[this.activeBoardIndex]
+      return this.boards[this.activeBoardIndex] || false
     }
   },
 
@@ -73,9 +73,11 @@ export default {
     })
 
     bus.$on('remove-board', function (id) {
+      const last = self.boards.length - 1
+      if (self.activeBoardIndex === last && id === last) {
+        self.activeBoardIndex--
+      }
       self.boards.splice(id, 1)
-      // Set active board to one less than the removed one
-      self.activeBoardIndex = id - 1
     })
 
     bus.$on('clear-board', function () {
