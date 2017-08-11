@@ -10,19 +10,19 @@ class BoardExport {
     const grouped = _.groupBy(data.notes, 'note_type')
 
     Object.keys(grouped).forEach((notegroup) => {
-      this.appendtoOutput(`\nCategory ${notegroup}`)
+      this.appendtoOutput(`\r\nCategory ${notegroup}`)
 
       const notes = _(grouped[notegroup]).sortBy(['votes', 'text']).reverse().value()
 
       const notesText = notes.map((note) => {
         return `${note.text} (${note.votes} votes)`
       })
-      this.appendtoOutput(notesText.join('\n'))
+      this.appendtoOutput(notesText.join('\r\n'))
     })
   }
 
   appendtoOutput (text) {
-    this.output += `${text}\n`
+    this.output += `${text}\r\n`
   }
 
   save () {
