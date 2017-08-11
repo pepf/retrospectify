@@ -1,15 +1,15 @@
 <template>
-  <div id="app" @click.stop="resetActive">
+  <div id="app" @click="resetActive()">
     <saved-boards :boards="boards" :active-board-index="activeBoardIndex"></saved-boards>
     <div class="board-content">
       <div class="main_menu">
         <span class="heading">Retrospectify<sup>™</sup></span>
         <div class="note_actions">
-          <button class="positive" @click="addNote('positive')">Positive note</button>
-          <button class="neutral" @click="addNote('neutral')">Neutral note</button>
-          <button class="negative" @click="addNote('improvement')">Improvement note</button>
+          <button class="positive" @click="$refs.board.addNote('positive')">Positive note</button>
+          <button class="neutral" @click="$refs.board.addNote('neutral')">Neutral note</button>
+          <button class="negative" @click="$refs.board.addNote('improvement')">Improvement note</button>
 
-          <button @click="reArrange()" title="Rearranges the notes by amount of votes and make them fit the current window">
+          <button @click="$refs.board.reArrange()" title="Rearranges the notes by amount of votes and make them fit the current window">
             Re-arrange <sup class="beta">BETA</sup>
           </button>
         </div>
@@ -19,40 +19,29 @@
           <button class="menu-toggle invert" @click.stop="toggleSidebar">☰</button>
         </div>
       </div>
-      <p>
-        <input class="board-title" v-model="activeBoard.title" />
-      </p>
-      <div class="notes">
-        <div class="empty-state" v-show="!activeBoard.notes.length">this is a very empty screen</div>
-        <note v-for="note in activeBoard.notes" :key="note.id" :content="note.text"
-          :type="note.note_type" :position="note.position" :id="note.id" :note-size="note.noteSize"
-          :font-size="note.fontSize" :votes="note.votes" :order="note.order" :active="note.id == activeDrag" @update="updateNote"
-          @stop-drag="stopDrag" @start-drag="startDrag">
-          </note>
-      </div>
+
+      <board ref="board" :board="activeBoard" />
     </div>
   </div>
 </template>
 
 <script>
-import Note from './components/Note'
+import Board from './components/Board'
 import SavedBoards from './components/SavedBoards'
 import BoardExport from './boardexport'
-import Positioner from './positioner'
 import bus from './bus.js'
 import moment from 'moment'
 
 export default {
   name: 'app',
   components: {
-    SavedBoards,
-    Note
+    Board,
+    SavedBoards
   },
 
   data: function () {
     return {
       activeBoardIndex: 0,
-      activeDrag: null,
       unsavedChanges: false,
       boards: []
     }
@@ -66,7 +55,6 @@ export default {
 
   beforeMount () {
     var self = this
-    this.positioner = new Positioner()
 
     bus.$on('remove-note', function (id) {
       var noteIndex = self.activeBoard.notes.findIndex(function (note) {
@@ -87,7 +75,6 @@ export default {
     bus.$on('remove-board', function (id) {
       self.boards.splice(id, 1)
       // Set active board to one less than the removed one
-      console.log(id - 1)
       self.activeBoardIndex = id - 1
     })
 
@@ -105,92 +92,13 @@ export default {
   },
 
   methods: {
-    reArrange () {
-      this.positioner.setState(this.activeBoard.notes)
-      this.positioner.reArrange()
-    },
-
-    addNote (type) {
-      var placeholderText
-      var terciary
-      switch (type) {
-        case 'improvement':
-          placeholderText = 'This needs some improvement'
-          terciary = 2
-          break
-        case 'neutral':
-          placeholderText = 'Just a remark'
-          terciary = 1
-          break
-        case 'positive':
-          placeholderText = 'This went well'
-          terciary = 0
-          break
-      }
-
-      // Note default props
-      var note = {
-        text: placeholderText,
-        note_type: type,
-        position: this.positioner.getPositionforNew(terciary),
-        noteSize: {w: 200, h: 150},
-        fontSize: 1,
-        votes: 0,
-        order: this.getMaxOrder() + 1,
-        id: Math.round(Math.random() * 100000)
-      }
-
-      this.activeBoard.notes.push(note)
+    resetActive () {
+      bus.$emit('reset-active')
     },
 
     boardTitle () {
       let today = moment().format('LL')
       return `My retrospective for ${today}`
-    },
-
-    getNoteById (id) {
-      return this.activeBoard.notes.find(function (note) {
-        return id === note.id
-      })
-    },
-
-    updateNote (id, update) {
-      var note = this.getNoteById(id)
-      if (note) {
-        // The whole board is not "initial" anymore
-        if (this.activeBoard.initial) { delete this.activeBoard.initial }
-
-        // Update note properties
-        Object.assign(note, update)
-      } else {
-        throw new Error('Where\'s the note!?')
-      }
-      return note
-    },
-
-    getMaxOrder () {
-      return this.activeBoard.notes.reduce(function (prev, value) {
-        if (typeof value.order === 'undefined') { return prev }
-        return (prev > value.order ? prev : value.order)
-      }, 0)
-    },
-
-    startDrag (id) {
-      var maxOrder = this.getMaxOrder()
-      var note = this.getNoteById(id)
-
-      // Set as active
-      this.activeDrag = id
-
-      // This note already is the top one, dont add 1
-      if (note.order === maxOrder && maxOrder > 0) {
-        return
-      } else {
-        this.updateNote(id, {order: maxOrder + 1})
-      }
-    },
-    stopDrag (id) {
-      this.updateNote(id, {active: false})
     },
 
     saveBoards () {
@@ -204,11 +112,6 @@ export default {
         initial: initial
       }
       return board
-    },
-
-    // Deactivate any selected note
-    resetActive () {
-      this.activeDrag = null
     },
 
     toggleSidebar () {
@@ -278,9 +181,6 @@ export default {
         }
       },
       deep: true // watch EVERYTHING
-    },
-    'activeBoard.notes': function (notes) {
-      this.positioner.setGrid(notes)
     }
   },
 
