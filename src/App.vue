@@ -125,7 +125,7 @@ export default {
       var storage = window.localStorage
 
       // Check if there is saved content available
-      if (storage.getItem('retrospective-version') !== window.VERSION) {
+      if (storage.getItem('retrospective-version') !== VERSION) {
         this.migrateState()
       }
 
@@ -170,7 +170,7 @@ export default {
       }
 
       // If migration succeeds, save version number in localStorage
-      storage.setItem('retrospective-version', window.VERSION)
+      storage.setItem('retrospective-version', VERSION)
     }
   },
 
