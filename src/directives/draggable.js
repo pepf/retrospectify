@@ -56,7 +56,7 @@ export default {
       e.stopImmediatePropagation()
     }
 
-    var MouseUp = function (e) {
+    var MouseUp = function () {
       if (this.callbackStop) {
         this.callbackStop.call(vNode.context)
       }
@@ -84,7 +84,8 @@ export default {
     if (typeof fn === 'function') {
       el.callback = fn
     } else {
-      console.warn('Callback should be a function!')
+      // eslint
+      console.warn('Callback should be a function!') // eslint-disable-line no-console
     }
 
     // Based the Naming of the callback, see if theres also a start and stop
@@ -102,7 +103,7 @@ export default {
     }
   },
 
-  unbind: function (el, binding) {
+  unbind: function (el) {
     // do clean up work
     // e.g. remove event listeners added in bind()
     el.removeEventListener('mousedown', el.onMouseDown)

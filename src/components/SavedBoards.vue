@@ -9,7 +9,9 @@
         </p>
         <h2>Saved boards</h2>
         <ul>
-          <li v-for="(board, index) in boards" @click="loadBoard(index)" v-bind:class="{ 'active' : (activeBoardIndex == index)}">
+          <li v-for="(board, index) in boards" :key="index" 
+            @click="loadBoard(index)"
+            :class="{ 'active' : (activeBoardIndex == index)}">
             {{ board.title }}
             <span class="remove-board" title="remove" @click="removeBoard(index)" v-show="boards.length > 1">✕</span>
           </li>
@@ -42,7 +44,7 @@ export default {
 
   created () {
     var self = this
-    bus.$on('toggle-sidebar', function (e) {
+    bus.$on('toggle-sidebar', function () {
       self.toggle()
     })
   },
