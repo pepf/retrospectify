@@ -11,7 +11,7 @@ This can be useful when doing retrospectives with remote teams or when you want 
 * Adding points to individual notes
 
 ## Working on
- * Exporting the whole board to a (text) file
+ * Moving the code to the store
  * Timeboxing the meeting
 
 ## Try it!
@@ -24,7 +24,7 @@ The quickest way is to use the live demo!
 Other than that, you can clone this repository, and from the root run:
 ``` bash
 npm install
-npm run build
+npm run serve
 ```
 
 This will create a ```dist``` directory. Put the contents of that directory on a server and you're all set!
@@ -39,17 +39,11 @@ Then follow these instructions, depending on what you want to do
 npm install
 
 # serve with hot reload at localhost:8080
-npm run dev
+npm run serve
 
 # build for production with minification
 npm run build
 
-# build for production and view the bundle analyzer report
-npm run build --report
-
 # run unit tests
-npm run unit
-
-# run all tests
-npm test
+npm run test
 ```
