@@ -10,6 +10,10 @@
   </head>
   <body>
     <div id="app"></div>
+    <!-- Allow for injection of template based on environment -->
+    <% if (process.env.VUE_APP_APPEND) { %>
+      <script src="<%=process.env.VUE_APP_APPEND %>"></script>
+    <% }  %>
     <!-- built files will be auto injected -->
   </body>
 </html>
