@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
   <div class="board" >
     <p>
       <input class="board-title" v-model="board.title" />

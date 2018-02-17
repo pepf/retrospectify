@@ -32,7 +32,7 @@ class Positioner {
    * Make sure all notes look the same
    * To simplify aligning them to an imaginary grid
    */
-  normalizeDimensions (note, index) {
+  normalizeDimensions (note) {
     let size = note.noteSize
     size.w = 150
     size.h = 150

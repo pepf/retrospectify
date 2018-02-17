@@ -85,22 +85,22 @@ export default {
     removeNote () {
       bus.$emit('remove-note', this.id)
     },
-    incrFontSize (e) {
+    incrFontSize () {
       var step = 0.5
       var max = 2.5
       var newFontSize = (this.fontSize + step <= max) ? this.fontSize + step : max
       this.$emit('update', this.id, { fontSize: newFontSize })
     },
-    decFontSize (e) {
+    decFontSize () {
       var step = 0.5
       var min = 0.5
       var newFontSize = (this.fontSize - step >= min) ? this.fontSize - step : min
       this.$emit('update', this.id, { fontSize: newFontSize })
     },
-    addVote (e) {
+    addVote () {
       this.$emit('update', this.id, {votes: this.votes + 1})
     },
-    removeVote (e) {
+    removeVote () {
       this.$emit('update', this.id, {votes: this.votes - 1})
     },
 
