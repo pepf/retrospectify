@@ -56,23 +56,23 @@ export default {
   beforeMount () {
     var self = this
 
-    bus.$on('remove-note', function (id) {
-      var noteIndex = self.activeBoard.notes.findIndex(function (note) {
+    bus.$on('remove-note', id => {
+      var noteIndex = self.activeBoard.notes.findIndex( note => {
         return (id === note.id)
       })
       self.activeBoard.notes.splice(noteIndex, 1)
     })
 
-    bus.$on('load-board', function (id) {
+    bus.$on('load-board', id => {
       self.activeBoardIndex = id
     })
 
-    bus.$on('create-board', function () {
+    bus.$on('create-board', () => {
       self.boards.push(self.createBoard(false))
       self.activeBoardIndex = self.boards.length - 1
     })
 
-    bus.$on('remove-board', function (id) {
+    bus.$on('remove-board', id => {
       const last = self.boards.length - 1
       if (self.activeBoardIndex === last && id === last) {
         self.activeBoardIndex--
@@ -80,11 +80,11 @@ export default {
       self.boards.splice(id, 1)
     })
 
-    bus.$on('clear-board', function () {
+    bus.$on('clear-board', () => {
       self.activeBoard.notes.splice(0, self.activeBoard.notes.length)
     })
 
-    bus.$on('save-boards', function () {
+    bus.$on('save-boards', () => {
       self.saveState()
     })
     bus.$on('export-board', () => {
@@ -153,9 +153,9 @@ export default {
       // Data to migrate
       if (oldState) {
         var data = JSON.parse(oldState)
-        data.forEach(function (board) {
+        data.forEach(board => {
           if (!board.notes) return
-          board.notes.forEach(function (note) {
+          board.notes.forEach(note => {
             // Check props for each note
             if (!note.id) {
               note.id = i

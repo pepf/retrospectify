@@ -40,8 +40,6 @@ export default {
     }
   },
 
-  template: '#saved-boards',
-
   created () {
     var self = this
     bus.$on('toggle-sidebar', function () {
@@ -145,7 +143,7 @@ $sidebar-bg: $denim;
 
 .slide-enter-active,
 .slide-leave-active {
-  transition: right 0.25s ease-out;
+  transition: right 0.25s  cubic-bezier(0.215, 0.610, 0.355, 1.000); //ease out cubic
 }
 .slide-enter, .slide-leave-to {
   right: -300px;

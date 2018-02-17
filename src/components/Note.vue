@@ -3,20 +3,20 @@
  */
 <template>
   <transition name="flip" appear>
-  <div class="note" v-bind:class="nClass" v-bind:style="cStyle" v-draggable="onPositionMouseMove"
+  <div class="note" :class="nClass" :style="cStyle" v-draggable="onPositionMouseMove"
     @click.stop="" @keyup.46="removeNote">
     <div>
-      <textarea v-model="stateContent" v-bind:style="{ fontSize: fontSize + 'em' }"></textarea>
+      <textarea v-model="stateContent" :style="{ fontSize: fontSize + 'em' }"></textarea>
       <button @click="removeNote" class="note-remove">✕</button>
       <div class="note-votes" v-show="votes > 0">
         <transition-group name="flip" tag="span">
           <span class="note-vote" v-for="n in votes" transition="flip" :key="n"></span>
         </transition-group>
       </div>
-      <div v-show="nClass.active" class="note-resize-handle" v-draggable="onSizeMouseMove"></div>
+      <div v-show="active" class="note-resize-handle" v-draggable="onSizeMouseMove"></div>
     </div>
     <!-- Note sub-menu, only shown when a note is in "edit state" -->
-    <div class="menu">
+    <div class="menu" v-if="active">
       <button @click.stop="incrFontSize">A+</button>
       <button @click.stop="decFontSize">A-</button>
       <button class="positive" @click.stop="addVote">+</button>
@@ -236,17 +236,14 @@ export default {
   }
 
   .menu {
-    display:none;
-  }
-  &.active .menu {
     display: flex;
     align-items: center;
     justify-content: space-around;
     position: absolute;
     background-color: $neutral-grey;
     border: 1px solid $grey;
-    bottom: -47px;
-    height: 47px;
+    bottom: -50px;
+    height: 50px;
     padding: 0.5em;
     border-radius: 2px;
   }
