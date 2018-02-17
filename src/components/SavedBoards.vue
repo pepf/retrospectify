@@ -9,7 +9,7 @@
         </p>
         <h2>Saved boards</h2>
         <ul>
-          <li v-for="(board, index) in boards" :key="index" 
+          <li v-for="(board, index) in boards" :key="index"
             @click="loadBoard(index)"
             :class="{ 'active' : (activeBoardIndex == index)}">
             {{ board.title }}
@@ -36,7 +36,7 @@ export default {
   data: function () {
     return {
       expanded: false,
-      version: window.VERSION
+      version: VERSION
     }
   },
 
