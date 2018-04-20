@@ -1,4 +1,4 @@
-![retrospectify screenshot](http://blog.pepf.nl/wp-content/uploads/2016/09/retrospectify.gif "Rertrospectify screenshot")
+![retrospectify screenshot](https://blog.pepf.nl/media/2016/09/retrospectify.gif "Rertrospectify screenshot")
 
 # Retrospectify
 An awesome tool for doing agile team retrospectives digitally.
