@@ -171,12 +171,69 @@ export default {
   }
   &.improvement {
     background-color: $red;
+
+    textarea {
+      &::-webkit-scrollbar-track
+      {
+        background-color: rgba($red, 0.5);
+      }
+      &::-webkit-scrollbar
+      {
+        width: 6px;
+        background-color: rgba($red, 0.5);
+      }
+
+      &::-webkit-scrollbar-thumb
+      {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        border-radius: 10px;
+        background-color: rgba($red, 0.8);
+      }
+    }
   }
   &.neutral {
     background-color: $neutral-grey;
+
+    textarea {
+      &::-webkit-scrollbar-track
+      {
+        background-color: rgba($neutral-grey, 0.5);
+      }
+      &::-webkit-scrollbar
+      {
+        width: 6px;
+        background-color: rgba($neutral-grey, 0.5);
+      }
+
+      &::-webkit-scrollbar-thumb
+      {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        border-radius: 10px;
+        background-color: rgba($neutral-grey, 0.8);
+      }
+    }
   }
   &.positive {
     background-color: $green;
+
+    textarea {
+      &::-webkit-scrollbar-track
+      {
+        background-color: rgba($green, 0.5);
+      }
+      &::-webkit-scrollbar
+      {
+        width: 6px;
+        background-color: rgba($green, 0.5);
+      }
+
+      &::-webkit-scrollbar-thumb
+      {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        border-radius: 10px;
+        background-color: rgba($green, 0.8);
+      }
+    }
   }
   &.dragging {
     box-shadow: 0px 0px 20px $shadow;
